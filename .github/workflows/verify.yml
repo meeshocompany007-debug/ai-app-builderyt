@@ -1,0 +1,28 @@
+name: Verify builder and sample APK
+on: [push, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm test
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - run: node build-sample.mjs
+      - run: gradle --no-daemon -p build/sample assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Studio-sample-debug-apk
+          path: build/sample/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
