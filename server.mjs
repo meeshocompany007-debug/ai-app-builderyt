@@ -1,4 +1,6 @@
 import http from 'node:http';
+import {api,init} from './services/api.mjs';
+import {proxy} from './services/publisher/proxy.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {randomBytes,randomUUID,createHash,scrypt,timingSafeEqual} from 'node:crypto';
 import {promisify} from 'node:util';
@@ -16,6 +18,7 @@ CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY,user TEXT,expires INT
 CREATE TABLE IF NOT EXISTS projects(id TEXT PRIMARY KEY,user TEXT,kind TEXT);
 CREATE TABLE IF NOT EXISTS versions(id TEXT,v INTEGER,idea TEXT,spec TEXT,PRIMARY KEY(id,v));
 CREATE TABLE IF NOT EXISTS usage(day TEXT,bucket TEXT,n INTEGER,PRIMARY KEY(day,bucket));`);
+init(db);
 const q=s=>db.prepare(s);
 function fail(status,message){throw Object.assign(new Error(message),{status})}
 function limit(bucket,max,day=new Date().toISOString().slice(0,10)){
@@ -38,8 +41,9 @@ function json(res,x){res.setHeader('Content-Type','application/json; charset=utf
 async function body(req){let chunks=[],n=0;for await(const b of req){n+=b.length;if(n>24000)fail(413,'Request बहुत बड़ी है।');chunks.push(b)}try{return JSON.parse(Buffer.concat(chunks))}catch{fail(400,'Invalid JSON')}}
 function session(req){const t=(req.headers.cookie||'').match(/(?:^|; *)studio=([a-f0-9]{64})(?:;|$)/)?.[1];return t&&q('SELECT user FROM sessions WHERE token=? AND expires>?').get(digest(t),Date.now())?.user}
 function load(id,uid,v){const row=q('SELECT p.kind,x.* FROM projects p JOIN versions x ON p.id=x.id WHERE p.user=? AND p.id=? AND (? IS NULL OR x.v=?) ORDER BY x.v DESC LIMIT 1').get(uid,id,v,v);if(!row)fail(404,'Project नहीं मिला।');row.spec=JSON.parse(row.spec);return row}
-const files={'/':['index.html','text/html'],'/studio':['public/studio.html','text/html'],'/live':['build/site/index.html','text/html'],'/studio.js':['public/studio.js','text/javascript']};
+const files={'/':['apps/studio-web/index.html','text/html'],'/studio':['apps/studio-web/index.html','text/html'],'/builder.js':['apps/studio-web/app.js','text/javascript'],'/builder.css':['apps/studio-web/style.css','text/css'],'/live':['build/site/index.html','text/html'],'/studio.js':['public/studio.js','text/javascript']};
 export async function handler(req,res){try{
+ if(proxy(req,res,db))return;
  const url=new URL(req.url,'http://localhost'),p=url.pathname,m=req.method;
  res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
  if(m==='GET' && Object.hasOwn(files,p)){const [f,t]=files[p];res.setHeader('Content-Type',t+'; charset=utf-8');res.end(await readFile(new URL(f,import.meta.url)));return}
@@ -55,6 +59,7 @@ export async function handler(req,res){try{
   res.setHeader('Set-Cookie','studio='+t+'; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800'+(process.env.NODE_ENV==='production'?'; Secure':''));return json(res,{ok:true})
  }
  const uid=session(req);if(!uid)fail(401,'पहले login करें।');
+ if(p==='/api/code'||p.startsWith('/api/code/'))return await api({req,res,p,m,db,uid,body,json,data});
  if(m==='POST'&&p==='/api/logout'){const token=req.headers.cookie.match(/(?:^|; *)studio=([a-f0-9]{64})/)[1];q('DELETE FROM sessions WHERE token=?').run(digest(token));res.setHeader('Set-Cookie','studio=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0');return json(res,{ok:true})}
  if(m==='GET'&&p==='/api/projects')return json(res,q('SELECT p.id,p.kind,max(v) AS version FROM projects p JOIN versions x ON p.id=x.id WHERE user=? GROUP BY p.id ORDER BY max(x.rowid) DESC').all(uid).map(r=>({...r,title:load(r.id,uid,null).spec.title})));
  if(m==='POST'&&p==='/api/projects'){

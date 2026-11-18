@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f5f4ef;
+  color: #202521;
+  font:
+    15px/1.5 Inter,
+    system-ui,
+    sans-serif;
+}
+header {
+  background: #172a26;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 5vw;
+  align-items: center;
+}
+header b {
+  letter-spacing: -0.04em;
+  font-size: 23px;
+}
+main {
+  display: grid;
+  grid-template-columns: minmax(270px, 32%) 1fr;
+  margin: 4vh auto;
+  width: 94%;
+  max-width: 1600px;
+  min-height: 78vh;
+  background: white;
+  border: 1px solid #d1d5cd;
+  border-radius: 17px;
+  overflow: hidden;
+}
+aside,
+section {
+  min-width: 0;
+  padding: clamp(16px, 2.5vw, 36px);
+}
+aside {
+  border-right: 1px solid #d1d5cd;
+}
+h1 {
+  font-size: 30px;
+  letter-spacing: -0.05em;
+  margin: 0 0 20px;
+}
+h2 {
+  font-size: 15px;
+}
+label {
+  display: block;
+  margin: 14px 0 6px;
+  font-weight: 600;
+}
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  border: 1px solid #bdc9c0;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+  margin: 5px 0 12px;
+}
+textarea {
+  min-height: 116px;
+  resize: vertical;
+}
+button {
+  cursor: pointer;
+  background: white;
+  color: #1b342c;
+}
+button:disabled {
+  opacity: 0.5;
+}
+.primary,
+nav .active {
+  background: #174e3e;
+  color: white;
+}
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+nav,
+footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+footer {
+  margin-top: auto;
+}
+iframe {
+  width: 100%;
+  height: 60vh;
+  border: 1px solid #d1d5cd;
+  border-radius: 10px;
+}
+#empty {
+  padding: 12vh 15%;
+  text-align: center;
+  color: #59685e;
+  background: #f6f8f5;
+  border: 1px dashed #bac8bd;
+  border-radius: 12px;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 55vh;
+  overflow: auto;
+  font: 13px/1.6 monospace;
+}
+article {
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+a {
+  color: #105e48;
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 720px) {
+  main {
+    display: flex;
+    flex-direction: column;
+    margin: 12px auto;
+  }
+  aside {
+    border: 0;
+    border-bottom: 1px solid #ddd;
+  }
+  iframe {
+    height: 52vh;
+  }
+}

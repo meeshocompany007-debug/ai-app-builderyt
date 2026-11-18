@@ -11,6 +11,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
       - run: npm test
       - run: node live/build.mjs build/site
       - run: timeout 90 node browser-smoke.mjs

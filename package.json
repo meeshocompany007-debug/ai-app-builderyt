@@ -1,1 +1,24 @@
-{"name":"ai-app-builder-studio","private":true,"type":"module","engines":{"node":">=24"},"scripts":{"start":"node server.mjs","test":"node --test test/*.mjs"}}
+{
+  "name": "ai-app-builder-studio",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "test": "node --test test/*.mjs tests/core.mjs",
+    "lint": "eslint apps/studio-web/*.js services/**/*.mjs services/*.mjs tests/*.mjs && tsc --noEmit --noUnusedLocals --noUnusedParameters",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "test:live": "node --env-file-if-exists=.env --test tests/live.mjs",
+    "prestart": "npm run build",
+    "pretest": "npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.1",
+    "@types/node": "24.10.0",
+    "eslint": "9.39.1",
+    "typescript": "5.9.3"
+  }
+}
