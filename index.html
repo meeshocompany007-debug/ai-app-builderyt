@@ -5,7 +5,7 @@
 <title>AI Builder · Project Studio</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f5f4ef;color:#202924;font:16px/1.5 Inter,system-ui,sans-serif}main{max-width:740px;margin:auto;padding:24px 18px 64px}header{display:flex;align-items:center;gap:10px;border-bottom:1px solid #c9cdc5;padding-bottom:16px;font-weight:750}header b{background:#154b39;color:#e0ff94;border-radius:9px;padding:3px 9px}h1{font-size:clamp(32px,6vw,52px);letter-spacing:-.045em;line-height:1.15;margin:36px 0 24px}fieldset{padding:0;border:0;margin:0}legend,label[for]{display:block;font-weight:700;margin-bottom:10px}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.tile,button,textarea{font:inherit}.tile{display:flex;flex-wrap:wrap;align-items:center;gap:8px;cursor:pointer;padding:14px;background:white;border:1px solid #bbc3ba;border-radius:12px;font-weight:650}.tile:has(:checked){background:#e2f2d7;border-color:#266146}input{accent-color:#215c42}.off{cursor:default;color:#646b64;background:#eeeee8}.off small{font-size:12px}section{background:white;border:1px solid #c9cdc5;border-radius:18px;padding:22px;margin-top:22px}textarea{width:100%;min-height:125px;padding:12px;border:1px solid #919c92;border-radius:9px;resize:vertical}button{margin-top:12px;background:#174e39;color:white;border:none;border-radius:9px;padding:12px 18px;cursor:pointer;font-weight:650}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #a65c00;outline-offset:2px}h2{margin:0 0 12px}.idea{white-space:pre-wrap;overflow-wrap:anywhere}.hint{color:#58635b;font-size:14px}@media(max-width:550px){.choices{grid-template-columns:1fr}.off small{margin-left:auto}}
-#siteTitle{width:100%;font:inherit;padding:10px}iframe{display:block;width:100%;height:280px;border:1px solid #bbc3ba;border-radius:12px;margin:14px 0}#download{display:inline-block;color:#174e39;font-weight:bold;padding:10px 0}</style>
+#siteTitle{width:100%;font:inherit;padding:10px}iframe{display:block;width:100%;height:280px;border:1px solid #bbc3ba;border-radius:12px;margin:14px 0}#download{display:inline-block;color:#174e39;font-weight:bold;padding:10px 0}#appTitle{width:100%;font:inherit;padding:10px}.phone{margin:14px 0;background:#fafafa;border:1px solid #bec5c0;min-height:155px;max-height:330px;overflow:auto;overflow-wrap:anywhere}.phone strong{display:block;background:#263831;color:white;padding:12px}.phone p{padding:0 14px;white-space:pre-wrap}</style>
 <main><header><b aria-hidden="true">✳</b> AI Builder</header>
 <h1>क्या बनाना चाहते हो?</h1>
 <form id="studio"><fieldset><legend>Project चुनो</legend><div class="choices">
@@ -15,7 +15,7 @@
 </div></fieldset><section><label for="idea">अपना idea लिखो</label>
 <textarea id="idea" required maxlength="4000" placeholder="जैसे मेरी बेकरी की वेबसाइट, जहाँ लोग मेन्यू देख सकें"></textarea>
 <p class="hint">अगली स्क्रीन पर अपना project brief देखो।</p><button>Brief देखो →</button></section></form>
-<section id="review" hidden><h2 tabindex="-1" id="heading"></h2><p class="idea" id="summary"></p><div id="web" hidden><h3>Website preview</h3><label for="siteTitle">Website का नाम</label><input id="siteTitle" maxlength="100" value="मेरी वेबसाइट"><p class="hint">इस sample में तुम्हारा नाम और idea इस्तेमाल होता है।</p><iframe id="preview" sandbox title="Sample website preview"></iframe><a id="download" download="my-website.html">Website HTML डाउनलोड करो ↓</a></div><button id="edit">← Idea बदलो</button></section></main>
+<section id="review" hidden><h2 tabindex="-1" id="heading"></h2><p class="idea" id="summary"></p><div id="web" hidden><h3>Website preview</h3><label for="siteTitle">Website का नाम</label><input id="siteTitle" maxlength="100" value="मेरी वेबसाइट"><p class="hint">इस sample में तुम्हारा नाम और idea इस्तेमाल होता है।</p><iframe id="preview" sandbox title="Sample website preview"></iframe><a id="download" download="my-website.html">Website HTML डाउनलोड करो ↓</a></div><div id="androidPanel" hidden><h3>Android स्क्रीन का नमूना</h3><label for="appTitle">स्क्रीन का नाम</label><input id="appTitle" value="मेरी ऐप" maxlength="100"><div class="phone"><strong id="screenName"></strong><p id="screenBody"></p></div><button type="button" id="zipButton">Android source ZIP डाउनलोड करो</button><p class="hint">ZIP को कंप्यूटर पर Android Studio में खोलकर ऐप build कर सकते हो। Setup की जानकारी ZIP में है।</p></div><button id="edit">← Idea बदलो</button></section></main>
 <script>
 const studio = document.querySelector('#studio');
 const idea = document.querySelector('#idea');
@@ -37,7 +37,8 @@ studio.addEventListener('submit', event => {
   heading.textContent = studio.elements.kind.value + ' का brief';
   document.querySelector('#summary').textContent = idea.value.trim();
   web.hidden = studio.elements.kind.value !== 'Website';
-  if (!web.hidden) renderWebsite();
+  androidPanel.hidden = !web.hidden;
+  if (web.hidden) renderAndroid(); else renderWebsite();
   studio.hidden = true;
   review.hidden = false;
   heading.focus();
@@ -53,7 +54,7 @@ function escapeText(value) {
 function renderWebsite() {
   const title = escapeText(siteTitle.value.trim() || 'मेरी वेबसाइट');
   const description = escapeText(idea.value.trim());
-  const html = `<!doctype html><html lang="hi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>*{box-sizing:border-box}body{margin:0;background:#e5f0db;color:#173f32;font:18px/1.6 system-ui,sans-serif}main{max-width:840px;margin:auto;padding:clamp(24px,8vw,100px);overflow-wrap:anywhere}h1{font-size:clamp(30px,7vw,68px);line-height:1.12;margin:0 0 20px}p{white-space:pre-wrap;border-top:2px solid;padding-top:18px}</style><main><h1>${title}</h1><p>${description}</p></main></html>`;
+  const html = `<!doctype html><html lang="hi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>*{box-sizing:border-box}body{margin:0;background:#e5f0db;color:#173f32;font:18px/1.6 system-ui,sans-serif}main{max-width:840px;margin:auto;padding:clamp(24px,8vw,100px);overflow-wrap:anywhere}h1{font-size:clamp(30px,7vw,68px);line-height:1.12;margin:0 0 20px}p{white-space:pre-wrap;border-top:2px solid;padding-top:18px}#appTitle{width:100%;font:inherit;padding:10px}.phone{margin:14px 0;background:#fafafa;border:1px solid #bec5c0;min-height:155px;max-height:330px;overflow:auto;overflow-wrap:anywhere}.phone strong{display:block;background:#263831;color:white;padding:12px}.phone p{padding:0 14px;white-space:pre-wrap}</style><main><h1>${title}</h1><p>${description}</p></main></html>`;
   preview.srcdoc = html;
   if (fileUrl) URL.revokeObjectURL(fileUrl);
   fileUrl = URL.createObjectURL(new Blob([html], {type: 'text/html;charset=utf-8'}));
@@ -65,4 +66,99 @@ document.querySelector('#edit').addEventListener('click', () => {
   studio.hidden = false;
   idea.focus();
 });
+const appTitle = document.querySelector('#appTitle');
+const androidPanel = document.querySelector('#androidPanel');
+const enc = new TextEncoder();
+// ZIP stored entries: local headers, central directory, end record.
+function projectZip(files) {
+  const local = [], directory = [];
+  let offset = 0, directorySize = 0;
+  for (const [path, content] of Object.entries(files)) {
+    const name = enc.encode(path), data = enc.encode(content);
+    let crc = -1;
+    for (const byte of data) {
+      crc ^= byte;
+      for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+    }
+    crc = ~crc;
+    function header(central) {
+      const bytes = new Uint8Array((central ? 46 : 30) + name.length);
+      const view = new DataView(bytes.buffer);
+      const u16 = (n,v) => view.setUint16(n,v,true);
+      const u32 = (n,v) => view.setUint32(n,v,true);
+      u32(0, central ? 0x02014b50 : 0x04034b50);
+      if (central) { u16(4,20); u32(42,offset); }
+      const shift = central ? 2 : 0;
+      u16(4+shift,20); u16(12+shift,33); u32(14+shift,crc);
+      u32(18+shift,data.length); u32(22+shift,data.length); u16(26+shift,name.length);
+      bytes.set(name,central ? 46 : 30);
+      return bytes;
+    }
+    const entry = header(false), record = header(true);
+    local.push(entry,data); directory.push(record);
+    offset += entry.length + data.length; directorySize += record.length;
+  }
+  const end = new Uint8Array(22), view = new DataView(end.buffer);
+  view.setUint32(0,0x06054b50,true);
+  view.setUint16(8,directory.length,true); view.setUint16(10,directory.length,true);
+  view.setUint32(12,directorySize,true); view.setUint32(16,offset,true);
+  return new Blob([...local,...directory,end],{type:'application/zip'});
+}
+function androidFiles(title, body) {
+  return {
+    'settings.gradle': "pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }\ndependencyResolutionManagement { repositories { google(); mavenCentral() } }\nrootProject.name = 'IdeaApp'\ninclude ':app'\n",
+    'app/build.gradle': "plugins { id 'com.android.application' version '8.7.3' }\nandroid { namespace 'studio.idea.sample'; compileSdk 35; defaultConfig { applicationId 'studio.idea.sample'; minSdk 23; targetSdk 35; versionCode 1; versionName '1.0' } }",
+    'app/src/main/AndroidManifest.xml': '<manifest xmlns:android="http://schemas.android.com/apk/res/android"><application android:theme="@android:style/Theme.Material.Light" android:label="Idea App"><activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity></application></manifest>',
+    'app/src/main/assets/title.txt': title,
+    'app/src/main/assets/idea.txt': body,
+    'app/src/main/java/studio/idea/sample/MainActivity.java': `package studio.idea.sample;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
+public class MainActivity extends Activity {
+    private String readAsset(String name) {
+        try (Reader reader = new InputStreamReader(getAssets().open(name), StandardCharsets.UTF_8)) {
+            StringBuilder text = new StringBuilder();
+            char[] buffer = new char[1024];
+            int count;
+            while ((count = reader.read(buffer)) != -1) text.append(buffer, 0, count);
+            return text.toString();
+        } catch (IOException e) { throw new IllegalStateException(e); }
+    }
+    @Override public void onCreate(Bundle state) {
+        super.onCreate(state);
+        setTitle(readAsset("title.txt"));
+        ScrollView scroll = new ScrollView(this);
+        TextView idea = new TextView(this);
+        int padding = Math.round(20 * getResources().getDisplayMetrics().density);
+        idea.setPadding(padding, padding, padding, padding);
+        idea.setTextSize(18);
+        idea.setText(readAsset("idea.txt"));
+        scroll.addView(idea);
+        setContentView(scroll);
+    }
+}
+`,
+    'README.txt': 'Extract this folder. Open the folder containing settings.gradle in Android Studio. Use Gradle 8.9 (local installation), JDK 17 and Android SDK 35. Sync, select an Android device, then Run. This source archive does not include the Gradle wrapper or a compiled APK.'
+  };
+}
+function renderAndroid() {
+  document.querySelector('#screenName').textContent = appTitle.value.trim() || 'मेरी ऐप';
+  document.querySelector('#screenBody').textContent = idea.value.trim();
+}
+appTitle.addEventListener('input',renderAndroid);
+document.querySelector('#zipButton').addEventListener('click', () => {
+  const blob = projectZip(androidFiles(appTitle.value.trim() || 'मेरी ऐप', idea.value.trim()));
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'IdeaApp-source.zip';
+  document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(link.href),60000);
+});
 </script></html>
+
