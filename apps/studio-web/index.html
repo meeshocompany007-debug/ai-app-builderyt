@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Builder Studio</title
+  ><link rel="stylesheet" href="/builder.css" />
+  <header>
+    <b>◈ &nbsp; Builder Studio</b><button id="logout" hidden>Sign out</button>
+  </header>
+  <main>
+    <aside>
+      <h1>Workspace</h1>
+      <div id="auth">
+        <form id="login">
+          <label
+            >Username<input
+              name="name"
+              minlength="3"
+              required
+              autocomplete="username" /></label
+          ><label
+            >Password<input
+              name="password"
+              type="password"
+              minlength="12"
+              required
+              autocomplete="current-password" /></label
+          ><button value="login">Sign in</button>
+          <button value="register">Create account</button>
+        </form>
+      </div>
+      <div id="workspace" hidden>
+        <label>Project<select id="project"></select></label
+        ><label
+          >Build for<select id="target">
+            <option value="web">Web application</option>
+            <option value="android">Android application</option>
+          </select></label
+        >
+        <form id="request">
+          <label id="promptLabel" for="prompt">Describe your application</label
+          ><textarea
+            id="prompt"
+            maxlength="8000"
+            required
+            placeholder="What should someone be able to do?"
+          ></textarea
+          ><button class="primary">Run build ↗</button>
+        </form>
+        <h2>Build activity</h2>
+        <pre id="activity" aria-live="polite"></pre>
+      </div>
+      <p id="status" role="status"></p>
+    </aside>
+    <section>
+      <nav>
+        <button data-tab="preview">Preview</button
+        ><button data-tab="source">Files</button
+        ><button data-tab="history">History</button>
+      </nav>
+      <div id="preview">
+        <h2 id="empty">
+          Your app preview will appear after its first successful build.
+        </h2>
+        <iframe
+          hidden
+          title="Application preview"
+          sandbox="allow-scripts allow-forms allow-same-origin"
+        ></iframe>
+      </div>
+      <div id="source" hidden>
+        <select id="paths" aria-label="Source file"></select>
+        <pre id="code"></pre>
+      </div>
+      <div id="history" hidden></div>
+      <footer>
+        <button id="publish" disabled>Publish web</button
+        ><a id="apk" hidden>Download APK</a
+        ><a id="link" hidden target="_blank" rel="noopener"
+          >Open published app ↗</a
+        >
+      </footer>
+    </section>
+  </main>
+  <script type="module" src="/builder.js"></script>
+</html>

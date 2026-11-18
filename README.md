@@ -1,3 +1,47 @@
+# AI App & Website Builder
+
+The default Studio at `/` and `/studio` creates versioned source projects. Sign in, choose Web or Android, and submit an idea. Open a project to request a targeted edit. The activity stream comes from the running job. Source and history remain available after refresh. A successful Android build includes a debug APK and a browser preview of the Flutter UI. Publishing a web snapshot assigns a stable hostname to its running preview.
+
+## Local start
+
+Requires Node 24 and npm. Run from the repository root.
+
+```sh
+npm ci
+cp .env.example .env
+npm run lint
+npm run typecheck
+npm run build
+npm test
+npm start
+```
+
+Open http://127.0.0.1:3000. To generate projects, configure the runner and gateway below and fill in the environment file. Set exactly one provider key, LLM_PROVIDER (openai, anthropic, or gemini), a compatible LLM_MODEL, and a positive global LLM_DAILY_CALL_LIMIT. Each planning, editing and repair request consumes a call. The server does not send its credentials into project containers.
+
+## Execution infrastructure
+
+Use one studio process with a dedicated Docker daemon on a Linux worker, the gVisor runsc runtime, per-container storage quotas (overlay2 on XFS with project quotas) and resource controls. Give the service account access to that dedicated daemon. The worker images must include sh, sleep, curl, python3, a writable /workspace and a runnable uid 1000. Build trusted images and push them to your own registry. Configure their immutable repo digests in WEB_BUILD_IMAGE and ANDROID_BUILD_IMAGE. The Android image requires a compatible Flutter SDK base with a licensed Android SDK. A registry and preconfigured base are deployment inputs.
+
+```sh
+docker build -f services/sandbox/Web.Dockerfile -t "$WEB_IMAGE_TAG" .
+docker push "$WEB_IMAGE_TAG"
+docker build -f services/sandbox/Android.Dockerfile --build-arg FLUTTER_BASE="$FLUTTER_BASE" -t "$ANDROID_IMAGE_TAG" .
+docker push "$ANDROID_IMAGE_TAG"
+docker network create --internal studio-mirror
+```
+
+Supply curated npm, Dart, Maven and Gradle mirrors reachable from that internal network or prewarm the pinned image caches for the allowed dependencies. Configure mirror URLs in the worker images. The isolated build network must have no route to the application database, metadata services or Docker API. Generated runtimes have networking disabled and can serve HTTP through the gateway. A runtime app requiring external integrations needs a separately designed egress policy.
+
+Set PREVIEW_DOMAIN to a dedicated domain on a separate registrable domain from the studio. Point its wildcard DNS and wildcard TLS ingress to the studio service, preserving Host. Configure ingress to accept only the studio and preview hostnames, cap request sizes and disable buffering on event streams. Back up DATA_DIR and configure Docker object retention, monitoring and per-tenant quotas before accepting public traffic. Snapshot rollback restores source and points at the historical runtime. Generated app data lives in the runtime container and is not migrated to a subsequent version. The platform database and APK files use persistent DATA_DIR.
+
+## Verification and release status
+
+`npm test` runs the local regression and HTTP integration suite. With a separate test deployment and real provider credentials configured, set STUDIO_TEST_URL and run `npm run test:live`. This creates a test account, invokes a real model, builds a web app, edits it, checks both HTTP features on its published URL, compiles Flutter and downloads the APK. This test consumes model credit and isolated worker resources. It fails when prerequisites are absent. The Flutter web preview is not a native device test. Android debug APKs require release signing for distribution. The implementation still needs an infrastructure-backed acceptance run and operational hardening before production use.
+
+## Earlier repository implementation
+
+The following notes document the older layout-based builder, static deployment and sample Android workflows. Those outputs use the earlier project format.
+
 # AI Builder — Project Studio
 
 Phone-friendly website and Android project builder. Open index.html for the standalone design demo, or run the server for accounts, saved revisions, optional AI design generation, and Android builds. Agent Builder is reserved for a future release.

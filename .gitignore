@@ -4,3 +4,4 @@ node_modules/
 *.apk
 build/
 backups/
+dist/
