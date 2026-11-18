@@ -1,7 +1,7 @@
 const $ = (s) => document.querySelector(s);
 let id = "",
   detail = null,
-  stream;
+  stream, signedIn = false;
 const message = (x) => ($("#status").textContent = x);
 async function api(path, body) {
   const res = await fetch(
@@ -23,7 +23,8 @@ const run = (fn) => async (e) => {
   try {
     await fn(e);
   } catch (err) {
-    message(err.message);
+    if ($("#auth").open) $("#loginError").textContent = err.message;
+    else message(err.message);
   }
 };
 function tabs(name) {
@@ -39,6 +40,7 @@ function watch(job) {
   $("#activity").textContent = "";
   const s = new EventSource("/api/code/" + id + "/events?job=" + job);
   stream = s;
+  $("#logs").open = true;
   s.onmessage = (e) =>
     ($("#activity").textContent += JSON.parse(e.data) + "\n");
   s.addEventListener(
@@ -62,10 +64,14 @@ async function show(next, follow = true) {
     frame = $("iframe");
   $("#project").value = id;
   $("#target").disabled = !!id;
+  $("#workbench").hidden = !id;
+  if (id) $("#headline").textContent = detail.project.title;
+  else $("#headline").innerHTML = "What will you<br><em>build today?</em>";
   if (id) $("#target").value = detail.project.target;
+  syncTargets();
   $("#promptLabel").textContent = id
     ? "Describe your changes"
-    : "Describe your application";
+    : "Your idea";
   frame.hidden = !latest;
   if (latest) frame.src = "https://" + latest.preview + "." + detail.domain;
   else frame.removeAttribute("src");
@@ -112,7 +118,10 @@ async function list(next = "") {
     new Option("+ New project", ""),
     ...rows.map((r) => new Option(r.title, r.id)),
   );
-  $("#auth").hidden = true;
+  signedIn = true;
+  $("#auth").close();
+  $("#signIn").hidden = true;
+  $("#projectPicker").hidden = false;
   $("#workspace").hidden = false;
   $("#logout").hidden = false;
   await show(next);
@@ -132,7 +141,8 @@ $("#logout").onclick = run(async () => {
 });
 $("#project").onchange = run(() => show($("#project").value));
 $("#request").onsubmit = run(async () => {
-  const b = $("#request button");
+  if (!signedIn) { $("#auth").showModal(); return; }
+  const b = $("#request button[type=submit]");
   b.disabled = true;
   try {
     const r = await api("/api/code" + (id ? "/" + id + "/edit" : ""), {
@@ -154,6 +164,16 @@ $("#publish").onclick = run(async () => {
   $("#link").href = r.url;
   $("#link").hidden = false;
 });
+function syncTargets() {
+  for (const button of document.querySelectorAll("[data-platform]")) {
+    button.setAttribute("aria-pressed", String(button.dataset.platform === $("#target").value));
+    button.disabled = $("#target").disabled;
+    button.onclick = () => { $("#target").value = button.dataset.platform; syncTargets(); };
+  }
+}
+syncTargets();
+$("#signIn").onclick = () => $("#auth").showModal();
+$("#closeAuth").onclick = () => $("#auth").close();
 tabs("preview");
 run(async () => {
   if ((await api("/api/status")).signedIn) await list();
