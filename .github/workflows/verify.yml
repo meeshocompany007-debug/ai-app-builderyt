@@ -12,6 +12,7 @@ jobs:
         with:
           node-version: '24'
       - run: npm test
+      - run: timeout 90 node browser-smoke.mjs
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -26,3 +27,30 @@ jobs:
           name: Studio-sample-debug-apk
           path: build/sample/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+  android-smoke:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Studio-sample-debug-apk
+          path: sample
+      - name: Enable emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          script: |
+            adb install sample/app-debug.apk
+            adb shell am start -W -n studio.generated.p8dacb3126e57f594f3fb/studio.runtime.app.MainActivity | tee launch.txt
+            grep -q 'Status: ok' launch.txt
+            adb shell am force-stop studio.generated.p8dacb3126e57f594f3fb
+            adb install -r sample/app-debug.apk
+            adb shell am start -W -n studio.generated.p8dacb3126e57f594f3fb/studio.runtime.app.MainActivity | tee restart.txt
+            grep -q 'Status: ok' restart.txt
+            adb shell pidof studio.generated.p8dacb3126e57f594f3fb
