@@ -18,7 +18,7 @@ try{
  const js=async expression=>{const r=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.error||r.result.exceptionDetails)throw Error(JSON.stringify(r));return r.result.result.value};
  const wait=async expr=>{for(let n=0;n<80;n++){if(await js(expr))return;await delay(100)}throw Error('Timed out: '+expr+' '+await js('document.body.innerText.slice(-500)'))};
  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
- await send('Page.navigate',{url:'http://127.0.0.1:3100/studio'});await wait('document.querySelector("#login")');
+ await send('Page.navigate',{url:'http://127.0.0.1:3100/studio'});await wait('document.querySelector("#auth")?.hidden===false');
  await js("document.querySelector('[name=name]').value='mobiletest';document.querySelector('[name=password]').value='sample-password-123';document.querySelector('[value=register]').click()");
  await wait("document.querySelector('#workspace')?.hidden===false");
  await js("document.querySelector('#kind').value='Android App';document.querySelector('#prompt').value='मेरी खर्च डायरी';document.querySelector('[value=starter]').click()");
