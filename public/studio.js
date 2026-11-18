@@ -11,7 +11,24 @@ function listen(id,event,handler){$(id).addEventListener(event,async e=>{
  try{await handler(e)}catch(err){$('msg').textContent=err.message}
  finally{if(button)button.disabled=false;if(id==='editor')$('ai').disabled=!caps.aiEnabled}
 })}
-function fresh(){state=null;latest=0;$('editor').reset();$('kind').disabled=false;$('result').hidden=true;$('preview').srcdoc='';$('msg').textContent=''}
+function clearQuestions(){
+ $('questions').replaceChildren();
+ $('questions').hidden=true;
+ $('ai').textContent='AI से बनाओ';
+}
+function showQuestions(questions){
+ clearQuestions();
+ for(const question of questions){
+  const label=document.createElement('label'),answer=document.createElement('textarea');
+  label.textContent=question;answer.dataset.question=question;answer.maxLength=600;
+  label.append(answer);$('questions').append(label);
+ }
+ $('questions').hidden=false;$('ai').textContent='जवाब भेजें और बनाएँ';
+ $('questions').querySelector('textarea').focus();
+}
+$('prompt').addEventListener('input',clearQuestions);
+$('kind').addEventListener('change',clearQuestions);
+function fresh(){clearQuestions();state=null;latest=0;$('editor').reset();$('kind').disabled=false;$('result').hidden=true;$('preview').srcdoc='';$('msg').textContent=''}
 async function refresh(){
  caps=await(await api('/api/status')).json();$('auth').hidden=caps.signedIn;$('workspace').hidden=!caps.signedIn;$('logout').hidden=!caps.signedIn;
  $('ai').disabled=!caps.aiEnabled;$('availability').textContent=caps.aiEnabled?'AI उपलब्ध है।':'Starter उपलब्ध है। AI के लिए server configuration बाकी है।';
@@ -25,7 +42,7 @@ async function projects(){
 async function open(id,v){
  const root='/api/projects/'+id;const row=await(await api(root+(v?'?v='+v:''))).json();
  const versions=await(await api(root+'/versions')).json();const href=root+'/html?v='+row.v;
- const page=await(await api(href)).text();state=row;latest=versions[0].v;
+ const page=await(await api(href)).text();clearQuestions();state=row;latest=versions[0].v;
  $('versions').replaceChildren(...versions.map(x=>new Option('Version '+x.v,x.v)));$('versions').value=row.v;
  $('kind').value=row.kind;$('kind').disabled=true;$('prompt').value=row.idea;$('name').textContent=row.spec.title;
  $('preview').srcdoc=page;$('html').href=href;$('zip').href=root+'/zip?v='+row.v;
@@ -39,8 +56,12 @@ listen('versions','change',()=>open(state.id,$('versions').value));
 listen('editor','submit',async e=>{
  if(state && state.v!==latest)throw Error('बदलाव के लिए सबसे नया version चुनो।');
  $('msg').textContent='Project तैयार हो रहा है…';
- const row=await(await api('/api/projects',{id:state?.id,version:state?.v,kind:$('kind').value,idea:$('prompt').value,ai:e.submitter.value==='ai'})).json();
- await open(row.id);await projects();$('msg').textContent='Version '+row.v+' सेव हुआ।';$('result').scrollIntoView()
+ const ai=e.submitter.value==='ai';
+ const answers=ai?Array.from($('questions').querySelectorAll('textarea'),field=>({question:field.dataset.question,answer:field.value.trim()})):[];
+ if(answers.some(x=>!x.answer))throw Error('पहले agent के सवालों का जवाब लिखें।');
+ const row=await(await api('/api/projects',{answers,id:state?.id,version:state?.v,kind:$('kind').value,idea:$('prompt').value,ai})).json();
+ if(row.questions){showQuestions(row.questions);$('msg').textContent='Agent को कुछ जानकारी चाहिए।';return}
+ await open(row.id);await projects();$('msg').textContent='Version '+row.v+' सेव हुआ।'+(row.model?' Model: '+row.model:'');$('result').scrollIntoView()
 });
 listen('apk','click',async()=>{const id=state.id,v=state.v;$('msg').textContent='APK build चल रहा है…';const r=await api('/api/projects/'+id+'/apk?v='+v,{});
  const url=URL.createObjectURL(await r.blob());const a=document.createElement('a');a.href=url;a.download='project-v'+v+'.apk';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);$('msg').textContent='APK डाउनलोड तैयार है।'});
