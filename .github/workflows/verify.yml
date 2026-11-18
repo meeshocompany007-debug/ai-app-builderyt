@@ -12,6 +12,7 @@ jobs:
         with:
           node-version: '24'
       - run: npm test
+      - run: node live/build.mjs build/site
       - run: timeout 90 node browser-smoke.mjs
       - uses: actions/setup-java@v4
         with:
@@ -21,6 +22,13 @@ jobs:
         with:
           gradle-version: '8.9'
       - run: node build-sample.mjs
+      - run: node build-builder.mjs
+      - run: gradle --no-daemon -p build/builder assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AI-Builder-debug-APK
+          path: build/builder/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
       - run: gradle --no-daemon -p build/sample assembleDebug
       - uses: actions/upload-artifact@v4
         with:
@@ -36,6 +44,10 @@ jobs:
         with:
           name: Studio-sample-debug-apk
           path: sample
+      - uses: actions/download-artifact@v4
+        with:
+          name: AI-Builder-debug-APK
+          path: studio
       - name: Enable emulator acceleration
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -46,6 +58,10 @@ jobs:
           api-level: 30
           arch: x86_64
           script: |
+            adb install studio/app-debug.apk
+            adb shell am start -W -n studio.ai.builder.workspace/studio.runtime.app.MainActivity | tee builder-launch.txt
+            grep -q 'Status: ok' builder-launch.txt
+            adb shell pidof studio.ai.builder.workspace
             adb install sample/app-debug.apk
             adb shell am start -W -n studio.generated.p8dacb3126e57f594f3fb/studio.runtime.app.MainActivity | tee launch.txt
             grep -q 'Status: ok' launch.txt

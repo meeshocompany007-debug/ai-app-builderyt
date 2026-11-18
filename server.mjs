@@ -38,7 +38,7 @@ function json(res,x){res.setHeader('Content-Type','application/json; charset=utf
 async function body(req){let chunks=[],n=0;for await(const b of req){n+=b.length;if(n>24000)fail(413,'Request बहुत बड़ी है।');chunks.push(b)}try{return JSON.parse(Buffer.concat(chunks))}catch{fail(400,'Invalid JSON')}}
 function session(req){const t=(req.headers.cookie||'').match(/(?:^|; *)studio=([a-f0-9]{64})(?:;|$)/)?.[1];return t&&q('SELECT user FROM sessions WHERE token=? AND expires>?').get(digest(t),Date.now())?.user}
 function load(id,uid,v){const row=q('SELECT p.kind,x.* FROM projects p JOIN versions x ON p.id=x.id WHERE p.user=? AND p.id=? AND (? IS NULL OR x.v=?) ORDER BY x.v DESC LIMIT 1').get(uid,id,v,v);if(!row)fail(404,'Project नहीं मिला।');row.spec=JSON.parse(row.spec);return row}
-const files={'/':['index.html','text/html'],'/studio':['public/studio.html','text/html'],'/studio.js':['public/studio.js','text/javascript']};
+const files={'/':['index.html','text/html'],'/studio':['public/studio.html','text/html'],'/live':['build/site/index.html','text/html'],'/studio.js':['public/studio.js','text/javascript']};
 export async function handler(req,res){try{
  const url=new URL(req.url,'http://localhost'),p=url.pathname,m=req.method;
  res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Cache-Control','no-store');
@@ -63,7 +63,7 @@ export async function handler(req,res){try{
   if(!idea||idea.length>4000||!['Website','Android App'].includes(b.kind))fail(400,'Project और idea जाँचें।');
   let old=b.id?load(b.id,uid,null):null;if(old&&old.v!==b.version)fail(409,'नया version खोलकर दोबारा edit करें।');
   if(old&&old.v>=100)fail(409,'Version limit reached');if(!old&&q('SELECT count(*) AS n FROM projects WHERE user=?').get(uid).n>=100)fail(409,'Project limit reached');
-  const spec=b.ai?await generate(idea,old?.spec):starter(idea),id=old?.id||randomUUID(),v=(old?.v||0)+1;
+  const spec=b.ai?await generate(idea,old?.spec):starter(idea,old?.spec),id=old?.id||randomUUID(),v=(old?.v||0)+1;
   db.exec('BEGIN IMMEDIATE');try{if(!old)q('INSERT INTO projects VALUES(?,?,?)').run(id,uid,b.kind);q('INSERT INTO versions VALUES(?,?,?,?)').run(id,v,idea,JSON.stringify(spec));db.exec('COMMIT')}catch(e){db.exec('ROLLBACK');throw e}return json(res,load(id,uid,v))
   }finally{reserved.delete(uid)}
  }

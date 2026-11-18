@@ -33,5 +33,20 @@ try{
  await js("document.querySelector('[name=item]').value='चाय';document.querySelector('[name=amount]').value='20';document.querySelector('form button').click()");
  await wait("document.querySelector('#total').textContent.includes('20.00')");
  await send('Page.reload');await wait("document.querySelector('#entries')?.textContent.includes('चाय')");
+ await send('Page.navigate',{url:'http://127.0.0.1:3100/live'});
+ await wait("document.querySelector('#platform')");
+ await js("document.querySelector('#platform').value='Android App';document.querySelector('#title').value='Tasks';document.querySelector('#prompt').value='task manager';document.querySelector('#build').click();document.querySelector('#publish').click()");
+ const first=await js("document.querySelector('#url').value");
+ assert.ok(first.includes('#app='));
+ await js("document.querySelector('#prompt').value='add due date and priority';document.querySelector('#build').click();document.querySelector('#publish').click()");
+ const second=await js("document.querySelector('#url').value");assert.notEqual(second,first);
+ await send('Page.navigate',{url:first});await wait("document.querySelector('input[name=item]')");
+ await js("document.querySelector('[name=item]').value='Ship app';document.querySelector('form button').click()");
+ await wait("document.querySelector('#entries').textContent.includes('Ship app')");
+ await send('Page.navigate',{url:'about:blank'});await wait("location.href==='about:blank'");
+ await send('Page.navigate',{url:second});await wait("document.querySelector('input[name=due]')");
+ assert.equal(await js("document.querySelector('#entries').textContent.includes('Ship app')"),true);
+ assert.equal(await js("!!document.querySelector('select[name=priority]')"),true);
+ console.log('Shared task project upgraded in place; browser kept previous entry.');
  console.log('Mobile viewport, registration, project creation, export and persisted expense passed');
 } finally {ws?.close();chrome.kill();api.kill();await delay(350);await rm(dir,{recursive:true,force:true,maxRetries:5})}
