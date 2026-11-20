@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
-  <item name="android:fontFamily">sans</item>
-  <item name="android:colorAccent">#5866F2</item>
-  <item name="android:statusBarColor">#F4F6FC</item>
-  <item name="android:windowLightStatusBar">true</item>
- </style>
+    <style name="RewardWatchTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:statusBarColor">#110C20</item>
+        <item name="android:navigationBarColor">#160F25</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorAccent">#A546F7</item>
+        <item name="android:windowBackground">#110C20</item>
+    </style>
 </resources>
