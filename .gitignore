@@ -1,6 +1,0 @@
-data/
-.env
-node_modules/
-*.apk
-build/
-backups/
