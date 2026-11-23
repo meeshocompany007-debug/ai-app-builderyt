@@ -60,10 +60,16 @@ class SnapDayActivity: Activity() {
         site = SiteMediaEngine(this)
         window.statusBarColor = Color.parseColor("#140D36")
         window.navigationBarColor = Color.parseColor("#170D37")
-        go("splash")
-        main.postDelayed({
-            if(page == "splash") go(if(pref.getBoolean("introduced",false)) "home" else "intro1")
-        }, 850)
+        val debugScreen=if((applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE)!=0)
+            intent?.getStringExtra("snapday_screen") else null
+        if(debugScreen=="home") {
+            go("home")
+        } else {
+            go("splash")
+            main.postDelayed({
+                if(page == "splash") go(if(pref.getBoolean("introduced",false)) "home" else "intro1")
+            }, 850)
+        }
         readShare(intent)
     }
     private fun readShare(i:Intent?) {
