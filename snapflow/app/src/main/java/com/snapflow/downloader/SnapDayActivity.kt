@@ -15,6 +15,8 @@ import android.os.Looper
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowInsets
+import android.os.Build
 import android.webkit.WebView
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -118,6 +120,16 @@ class SnapDayActivity: Activity() {
             setBackgroundColor(if(name in listOf("splash","audio")) ui.navy else ui.white)
         }
         frame.addView(root, FrameLayout.LayoutParams(-1,-1))
+        // Android 15+ enforces edge-to-edge for target SDK 35. Respect the system
+        // status and navigation gesture bars so the header and CTA remain tappable.
+        if(Build.VERSION.SDK_INT >= 35) {
+            window.setDecorFitsSystemWindows(false)
+            frame.setOnApplyWindowInsetsListener { _, insets ->
+                val bars=insets.getInsets(WindowInsets.Type.systemBars())
+                root.setPadding(0,bars.top,0,bars.bottom)
+                insets
+            }
+        }
         setContentView(frame)
         if(name=="splash") { DayIntro(this).splash(); return }
         if(name.startsWith("intro") || name in listOf("login","email","signup","complete")) {
