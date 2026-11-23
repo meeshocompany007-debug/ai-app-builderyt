@@ -34,7 +34,7 @@ class DownloadSmokeTest {
                 Thread.sleep(1_000L)
             }
             assertTrue("Timed out downloading real video: " + latest, latest?.status == DownloadManager.STATUS_SUCCESSFUL)
-            val uri = engine.open(id) ?: fail("No readable video URI returned")
+            val uri = engine.open(id) ?: throw AssertionError("No readable video URI returned")
             var totalRead = 0L
             val header = ByteArray(12)
             ctx.contentResolver.openInputStream(uri)?.use { input ->
