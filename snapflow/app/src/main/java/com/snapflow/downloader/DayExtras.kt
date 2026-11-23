@@ -214,12 +214,12 @@ class DayExtras(private val a:SnapDayActivity) {
             gap(10)
         }
         a.direct.history().filter {it.status==DownloadManager.STATUS_SUCCESSFUL}.forEach { t ->
-            b.addView(u.cardLabel(t.title,"Saved in Downloads/SnapFlow","↓").apply {
+            b.addView(u.cardLabel(t.title,"Saved in Downloads/SnapDay","↓").apply {
                 setOnClickListener {a.direct.open(t.id)?.let {a.playVideo(it)}}
             })
             gap(10)
         }
-        label("Android Downloads/SnapFlow contains direct downloads. App-owned files appear above.",12,false,u.muted)
+        label("Android Downloads/SnapDay contains direct downloads. App-owned files appear above.",12,false,u.muted)
     }
     private fun settingsSwitch(title:String,subtitle:String,checked:Boolean,change:(Boolean)->Unit) {
         val c=u.panel()
@@ -245,8 +245,8 @@ class DayExtras(private val a:SnapDayActivity) {
             }
         })
         gap(10)
-        b.addView(u.cardLabel("Download Path","Downloads/SnapFlow • app-owned website media","▤").apply {
-            setOnClickListener {a.message("Android direct downloads: Downloads/SnapFlow. Website-media files: SnapDay private media storage.")}
+        b.addView(u.cardLabel("Download Path","Downloads/SnapDay • app-owned website media","▤").apply {
+            setOnClickListener {a.message("Android direct downloads: Downloads/SnapDay. Website-media files: SnapDay private media storage.")}
         })
         gap(10)
         b.addView(u.cardLabel("Player Settings","Video and MP3 playback","▷").apply {
