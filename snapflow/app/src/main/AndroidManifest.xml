@@ -4,11 +4,11 @@
     <application
         android:allowBackup="false"
         android:extractNativeLibs="true"
-        android:label="SnapFlow"
+        android:label="SnapDay"
         android:theme="@android:style/Theme.Material.NoActionBar"
         android:usesCleartextTraffic="false">
         <activity
-            android:name=".MainActivity"
+            android:name=".SnapDayActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
