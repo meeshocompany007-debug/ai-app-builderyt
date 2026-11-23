@@ -69,13 +69,13 @@ class DownloadEngine(private val context: Context) {
     }
 
     fun enqueue(media: Prepared): Long {
-        val fileName = "SnapFlow_" + System.currentTimeMillis() + "." + media.extension
+        val fileName = "SnapDay_" + System.currentTimeMillis() + "." + media.extension
         val wifiOnly = prefs.getBoolean("wifi_only", false)
         val req = DownloadManager.Request(Uri.parse(media.url))
-            .setTitle(fileName).setDescription("SnapFlow video download").setMimeType(media.mime)
+            .setTitle(fileName).setDescription("SnapDay video download").setMimeType(media.mime)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setAllowedOverMetered(!wifiOnly).setAllowedOverRoaming(false)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "SnapFlow/" + fileName)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "SnapDay/" + fileName)
         val id = manager.enqueue(req)
         val saved = prefs.getString("ids", "").orEmpty().split(',').mapNotNull { it.toLongOrNull() }
         prefs.edit().putString("ids", (listOf(id) + saved).distinct().take(100).joinToString(",")).apply()
