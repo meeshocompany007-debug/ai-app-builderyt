@@ -74,6 +74,8 @@ class DayPages(private val a:SnapDayActivity) {
         val search=u.row()
         val input=EditText(a).apply {
             hint="⌕  Search or paste link (YouTube, Insta...)"
+            setTextColor(u.ink)
+            setHintTextColor(u.muted)
             textSize=13f
             setSingleLine(true)
             setPadding(u.dp(12),u.dp(10),u.dp(12),u.dp(10))
