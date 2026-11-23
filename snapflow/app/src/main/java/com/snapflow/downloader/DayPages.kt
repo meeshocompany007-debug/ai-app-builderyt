@@ -100,8 +100,14 @@ class DayPages(private val a:SnapDayActivity) {
             a.category=it;a.go("home")
         }
         space(14)
-        val satsang=u.poster("🪷","जीवन में सफलता का सच्चा मंत्र","Satsang • Browse original videos",
-            Color.parseColor("#674209"),Color.parseColor("#BD8216"))
+        val satsang=android.widget.ImageView(a).apply {
+            setImageResource(R.drawable.snapday_satsang)
+            scaleType=android.widget.ImageView.ScaleType.CENTER_CROP
+            background=u.shape(u.lilac,16)
+            clipToOutline=true
+            elevation=u.dp(3).toFloat()
+            contentDescription="User-approved Satsang thumbnail illustration"
+        }
         b.addView(satsang,LinearLayout.LayoutParams(-1,u.dp(194)))
         satsang.setOnClickListener {a.browserAt("https://www.youtube.com/results?search_query=hindi+satsang")}
         space(9)
