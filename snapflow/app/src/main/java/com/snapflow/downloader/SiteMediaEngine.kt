@@ -54,7 +54,7 @@ class SiteMediaEngine(private val context: Context) {
         req.addOption("-f", "best[ext=mp4]/best[ext=webm]/best")
         req.addOption("-o", File(outputDir, "%(title).90B_%(id)s.%(ext)s").absolutePath)
         onProgress(0, "Looking for downloadable media")
-        YoutubeDL.getInstance().execute(req, { progress, _, line ->
+        YoutubeDL.getInstance().execute(req, callback = { progress: Float, _: Long, line: String ->
             onProgress(progress.toInt().coerceIn(0, 99), line.takeLast(160))
         })
         val file = savedVideos().firstOrNull { it.file.absolutePath !in before }
