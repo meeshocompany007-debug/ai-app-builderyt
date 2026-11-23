@@ -32,34 +32,46 @@ class DayIntro(private val a: SnapDayActivity) {
     private fun intro(page:String) {
         a.root.setBackgroundColor(u.white)
         val step=when(page) { "intro1" -> 1; "intro2" -> 2; else -> 3 }
-        val toolbar=u.row().apply {setPadding(u.dp(20),u.dp(17),u.dp(20),u.dp(9))}
-        toolbar.addView(u.text("SnapDay",18,u.violet,true),LinearLayout.LayoutParams(0,-2,1f))
+        val toolbar=u.row().apply {
+            setPadding(u.dp(22),u.dp(12),u.dp(22),u.dp(7))
+        }
+        toolbar.addView(u.text("SnapDay",21,u.violet,true),LinearLayout.LayoutParams(0,-2,1f))
         toolbar.addView(u.text("Skip ("+step+"/3)",14,u.violet,true).apply {
+            contentDescription="Skip onboarding step "+step
             setOnClickListener {a.go("login")}
         })
         a.root.addView(toolbar)
-        val center=u.col(24).apply { gravity=Gravity.CENTER }
-        a.root.addView(center,LinearLayout.LayoutParams(-1,0,1f))
-        val illustration=FrameLayout(a).apply {
-            background=u.gradient(Color.parseColor("#F1D8FF"),Color.parseColor("#BB9BFF"),40)
+        // All content, including the CTA, lives inside a scrollable and insets-aware
+        // area. The button is placed immediately after the illustration and dots
+        // rather than behind Android's bottom navigation/gesture bar.
+        val scroller=ScrollView(a).apply {
+            isFillViewport=false
+            isVerticalScrollBarEnabled=false
+            overScrollMode=android.view.View.OVER_SCROLL_NEVER
         }
-        if(step==1 || step==3) {
-            val picture=android.widget.ImageView(a).apply {
-                setImageResource(if(step==1)R.drawable.snapday_onboard_headphones else R.drawable.snapday_onboard_rocket)
-                scaleType=android.widget.ImageView.ScaleType.FIT_CENTER
-                contentDescription=if(step==1)"Video platforms onboarding" else "Rocket onboarding"
-            }
-            illustration.addView(picture,FrameLayout.LayoutParams(-1,-1))
-        } else {
-            val quality=android.widget.ImageView(a).apply {
-                setImageResource(R.drawable.snapday_onboard_quality)
-                scaleType=android.widget.ImageView.ScaleType.FIT_CENTER
-                contentDescription="HD and 4K video quality selection illustration"
-            }
-            illustration.addView(quality,FrameLayout.LayoutParams(-1,-1))
+        a.root.addView(scroller,LinearLayout.LayoutParams(-1,0,1f))
+        val center=u.col().apply {
+            gravity=Gravity.CENTER_HORIZONTAL
+            setPadding(u.dp(21),u.dp(24),u.dp(21),u.dp(22))
         }
-        center.addView(illustration,LinearLayout.LayoutParams(-1,u.dp(250)))
-        center.addView(u.space(30))
+        scroller.addView(center)
+        val screenHeightDp=a.resources.displayMetrics.heightPixels /
+            a.resources.displayMetrics.density
+        val imageHeight=when {
+            screenHeightDp<630f -> 170
+            screenHeightDp<760f -> 193
+            else -> 220
+        }
+        val artwork=DayIllustration(a,step).apply {
+            tag="snapday_onboarding_vector"
+            contentDescription=when(step) {
+                1 -> "High-definition person wearing headphones, phone and video platform icons"
+                2 -> "Crisp illustration of HD and 4K video playback"
+                else -> "High-definition purple rocket taking off through clouds"
+            }
+        }
+        center.addView(artwork,LinearLayout.LayoutParams(-1,u.dp(imageHeight)))
+        center.addView(u.space(if(screenHeightDp<700f)18 else 25))
         val headings=listOf("Download Videos\nfrom All Platforms",
             "Choose Your\nVideo Quality","Fast, Safe & Easy")
         val subtitles=listOf(
@@ -67,17 +79,21 @@ class DayIntro(private val a: SnapDayActivity) {
             "Choose from available video formats and resolutions, from low to high quality.",
             "A lightweight video downloader with built-in player, library and settings."
         )
-        center.addView(u.text(headings[step-1].replace("\\n","\n"),26,u.ink,true,Gravity.CENTER))
-        center.addView(u.space(12))
+        center.addView(u.text(headings[step-1],26,u.ink,true,Gravity.CENTER))
+        center.addView(u.space(10))
         center.addView(u.text(subtitles[step-1],14,u.muted,false,Gravity.CENTER))
-        center.addView(u.space(18))
+        center.addView(u.space(20))
         center.addView(u.text((1..3).joinToString("  "){if(it==step)"●" else "○"},
-            23,u.violet,false,Gravity.CENTER))
-        val bottom=u.col(18)
-        bottom.addView(u.button(if(step==3)"Get Started  →" else "Next  →") {
+            22,u.violet,false,Gravity.CENTER))
+        center.addView(u.space(23))
+        val cta=u.button(if(step==3)"Get Started  →" else "Next  →") {
             if(step==3)a.go("login") else a.go("intro"+(step+1))
-        })
-        a.root.addView(bottom)
+        }.apply {
+            tag="snapday_onboarding_cta"
+            contentDescription=if(step==3)"Get Started" else "Next, onboarding step "+(step+1)
+        }
+        center.addView(cta,LinearLayout.LayoutParams(-1,u.dp(54)))
+        center.addView(u.space(18))
     }
     private fun auth(page:String) {
         a.root.setBackgroundColor(u.white)
