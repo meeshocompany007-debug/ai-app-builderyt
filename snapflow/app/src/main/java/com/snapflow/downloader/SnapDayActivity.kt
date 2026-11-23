@@ -64,8 +64,9 @@ class SnapDayActivity: Activity() {
         window.navigationBarColor = Color.parseColor("#170D37")
         val debugScreen=if((applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE)!=0)
             intent?.getStringExtra("snapday_screen") else null
-        if(debugScreen=="home") {
-            go("home")
+        if(debugScreen in setOf("home","intro1","intro2","intro3","premium")) {
+            // Debug-only route for automated visual QA; disabled in release builds.
+            go(debugScreen!!)
         } else {
             go("splash")
             main.postDelayed({
