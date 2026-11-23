@@ -32,7 +32,7 @@ The successful build uploads `SnapDay-debug-APK` containing `app-debug.apk`.
 Android tests in `app/src/androidTest` validate real authorized MP4 bytes, on-device site-engine initialization and page navigation; no mock video-transfer completion.
 
 ## Real downloading
-- Direct HTTPS MP4/WebM: Android DownloadManager, saves under `Downloads/SnapFlow`. This storage subfolder is retained for backwards compatibility; the UI brand is SnapDay.
+- Direct HTTPS MP4/WebM: Android DownloadManager, saves under `Downloads/SnapDay`.
 - Site adapter: on-device yt-dlp library, working with sources that allow downloading. Does **not** guarantee YouTube/Instagram/Facebook links, DRM content, paid/private media or login-restricted streams.
 - Default public-domain smoke test URL: `https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4`.
 - The UI only offers source formats that are actually known; no fake resolution options.
