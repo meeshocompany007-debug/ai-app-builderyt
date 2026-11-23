@@ -62,11 +62,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Allow Android emulator hardware acceleration
-        run: |
-          sudo sh -c 'echo "KERNEL==\\"kvm\\", GROUP=\\"kvm\\", MODE=\\"0666\\"" > /etc/udev/rules.d/99-kvm4all.rules'
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
+      - name: Enable emulator KVM access
+        run: sudo chmod 666 /dev/kvm
       - name: Real video download on Android emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
