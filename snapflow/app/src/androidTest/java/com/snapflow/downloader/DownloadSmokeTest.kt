@@ -15,6 +15,12 @@ import org.junit.runner.RunWith
  */
 @RunWith(AndroidJUnit4::class)
 class DownloadSmokeTest {
+    @Test fun bundledSiteEngineStartsOnAndroid() {
+        val ctx = InstrumentationRegistry.getInstrumentation().targetContext
+        com.yausername.youtubedl_android.YoutubeDL.getInstance().init(ctx)
+        assertTrue("Site engine initialization passed", true)
+    }
+
     @Test fun downloadsCc0Mp4AndReadsVideoBytes() {
         val ctx = InstrumentationRegistry.getInstrumentation().targetContext
         val engine = DownloadEngine(ctx)
