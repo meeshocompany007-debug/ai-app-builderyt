@@ -75,7 +75,11 @@ jobs:
           emulator-boot-timeout: 600
           script: |
             gradle -p snapflow --no-daemon :app:connectedDebugAndroidTest
-            adb exec-out run-as com.snapflow.downloader cat files/snapday-home.png > snapflow/snapday-home-emulator.png || true
+            adb shell am force-stop com.snapflow.downloader
+            adb shell am start -n com.snapflow.downloader/.SnapDayActivity --es snapday_screen home
+            sleep 2
+            adb exec-out screencap -p > snapflow/snapday-home-emulator.png
+            test -s snapflow/snapday-home-emulator.png
       - name: Upload SnapDay Home screenshot for UI review
         if: always()
         uses: actions/upload-artifact@v4
