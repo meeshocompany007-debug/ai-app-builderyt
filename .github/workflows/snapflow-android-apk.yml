@@ -86,11 +86,18 @@ jobs:
             adb logcat -d -s AndroidRuntime:E ActivityTaskManager:I | tail -70 || true
             adb exec-out screencap -p > snapflow/snapday-home-emulator.png
             test -s snapflow/snapday-home-emulator.png
-      - name: Upload SnapDay Home screenshot for UI review
+            for screen in intro1 intro2 intro3 premium; do
+              adb shell am force-stop com.snapflow.downloader
+              adb shell am start -n com.snapflow.downloader/.SnapDayActivity --es snapday_screen "$screen"
+              sleep 2
+              adb exec-out screencap -p > "snapflow/snapday-$screen-emulator.png"
+              test -s "snapflow/snapday-$screen-emulator.png"
+            done
+      - name: Upload SnapDay Home, Onboarding and Premium screenshots for UI review
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: SnapDay-UI-screenshot
-          path: snapflow/snapday-home-emulator.png
+          name: SnapDay-UI-screenshots
+          path: snapflow/snapday-*-emulator.png
           if-no-files-found: warn
           retention-days: 14
