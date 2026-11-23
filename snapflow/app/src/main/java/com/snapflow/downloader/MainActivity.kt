@@ -233,6 +233,37 @@ class MainActivity : Activity() {
         }.start()
     }
 
+    private fun startSiteDownload(url: String) {
+        if (siteBusy) { toast("A website download is already running"); return }
+        siteBusy = true
+        siteProgress = 0
+        siteStatus = "Finding website video"
+        showTab("Downloads")
+        Thread {
+            try {
+                val video = siteEngine.download(url) { progress, message ->
+                    runOnUiThread {
+                        siteProgress = progress
+                        siteStatus = message
+                        if (activeTab == "Downloads") showTab("Downloads")
+                    }
+                }
+                runOnUiThread {
+                    siteBusy = false
+                    siteStatus = "Saved: " + video.name
+                    showTab("Player")
+                    toast("Website video saved")
+                }
+            } catch (e: Exception) {
+                runOnUiThread {
+                    siteBusy = false
+                    siteStatus = "Website download failed: " + (e.message ?: "unknown error")
+                    showTab("Downloads")
+                }
+            }
+        }.start()
+    }
+
     private fun quality() {
         val media = pendingMedia
         if (media == null) { showTab("Home"); return }
