@@ -53,9 +53,14 @@ class DayPages(private val a:SnapDayActivity) {
         col.setOnClickListener { a.browserAt(url) }
         return col
     }
-    private fun mediaRow(title:String,subtitle:String,symbol:String,c1:Int,c2:Int,click:()->Unit) {
+    private fun mediaRow(title:String,subtitle:String,symbol:String,c1:Int,c2:Int,artwork:Int=0,click:()->Unit) {
         val row=u.row()
-        val poster=u.poster(symbol,"","",c1,c2)
+        val poster:View=if(artwork!=0) android.widget.ImageView(a).apply {
+            setImageResource(artwork)
+            scaleType=android.widget.ImageView.ScaleType.CENTER_CROP
+            background=u.shape(u.lilac,13)
+            clipToOutline=true
+        } else u.poster(symbol,"","",c1,c2)
         row.addView(poster,LinearLayout.LayoutParams(u.dp(123),u.dp(83)))
         val labels=u.col().apply {setPadding(u.dp(12),0,0,0)}
         labels.addView(u.text(title,14,u.ink,true))
@@ -116,6 +121,12 @@ class DayPages(private val a:SnapDayActivity) {
         space(21)
         text(if(a.category=="Music")"Popular Music ♫" else "Popular Videos 🔥",20,true)
         space(12)
+        mediaRow("Hindi songs and music videos","Browse the original music website","♫",
+            Color.parseColor("#67325A"),Color.parseColor("#C8558C"),
+            R.drawable.snapday_romance) {
+            a.browserAt("https://www.youtube.com/results?search_query=hindi+music+videos")
+        }
+        space(12)
         mediaRow("Flower — CC0 Sample Video","A real, freely licensed test video",
             "🌸",Color.parseColor("#A038A2"),Color.parseColor("#EF88A5")) {
             a.selectedLink="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
@@ -151,9 +162,14 @@ class DayPages(private val a:SnapDayActivity) {
             b.addView(player,LinearLayout.LayoutParams(-1,u.dp(220)))
             player.setOnPreparedListener {player.start()}
         } else {
-            b.addView(u.poster("▶","Website video","Open website to play",
-                Color.parseColor("#242139"),Color.parseColor("#7D45C8")),
-                LinearLayout.LayoutParams(-1,u.dp(220)))
+            val artwork=android.widget.ImageView(a).apply {
+                setImageResource(R.drawable.snapday_romance)
+                scaleType=android.widget.ImageView.ScaleType.CENTER_CROP
+                background=u.shape(u.lilac,16)
+                clipToOutline=true
+                setOnClickListener { a.browserAt(mediaUrl) }
+            }
+            b.addView(artwork,LinearLayout.LayoutParams(-1,u.dp(220)))
         }
         space(14)
         text("Saved media • Source controls",13,false,u.muted)
