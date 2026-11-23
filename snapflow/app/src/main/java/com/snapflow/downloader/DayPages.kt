@@ -113,7 +113,7 @@ class DayPages(private val a:SnapDayActivity) {
             elevation=u.dp(3).toFloat()
             contentDescription="User-approved Satsang thumbnail illustration"
         }
-        b.addView(satsang,LinearLayout.LayoutParams(-1,u.dp(194)))
+        b.addView(satsang,LinearLayout.LayoutParams(-1,u.dp(139)))
         satsang.setOnClickListener {a.browserAt("https://www.youtube.com/results?search_query=hindi+satsang")}
         space(9)
         text("जीवन में सफलता का सच्चा मंत्र | Satsang",15,true)
