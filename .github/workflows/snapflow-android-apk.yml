@@ -77,8 +77,13 @@ jobs:
             gradle -p snapflow --no-daemon :app:connectedDebugAndroidTest
             adb install -r snapflow/app/build/outputs/apk/debug/app-debug.apk
             adb shell am force-stop com.snapflow.downloader
+            adb shell input keyevent 224
+            adb shell wm dismiss-keyguard || true
+            adb shell input keyevent 82
             adb shell am start -n com.snapflow.downloader/.SnapDayActivity --es snapday_screen home
-            sleep 2
+            sleep 4
+            adb shell dumpsys activity activities | grep -E "mResumed|topResumed|SnapDayActivity" | tail -8 || true
+            adb logcat -d -s AndroidRuntime:E ActivityTaskManager:I | tail -70 || true
             adb exec-out screencap -p > snapflow/snapday-home-emulator.png
             test -s snapflow/snapday-home-emulator.png
       - name: Upload SnapDay Home screenshot for UI review
