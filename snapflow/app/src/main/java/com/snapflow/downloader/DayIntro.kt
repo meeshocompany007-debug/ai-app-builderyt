@@ -43,9 +43,17 @@ class DayIntro(private val a: SnapDayActivity) {
         val illustration=FrameLayout(a).apply {
             background=u.gradient(Color.parseColor("#F1D8FF"),Color.parseColor("#BB9BFF"),40)
         }
-        val artwork=listOf("🎧  📱","HD  4K  ▶","🚀")[step-1]
-        illustration.addView(u.text(artwork,68,u.violet,true,Gravity.CENTER),
-            FrameLayout.LayoutParams(-1,-1))
+        if(step==1 || step==3) {
+            val picture=android.widget.ImageView(a).apply {
+                setImageResource(if(step==1)R.drawable.snapday_onboard_headphones else R.drawable.snapday_onboard_rocket)
+                scaleType=android.widget.ImageView.ScaleType.FIT_CENTER
+                contentDescription=if(step==1)"Video platforms onboarding" else "Rocket onboarding"
+            }
+            illustration.addView(picture,FrameLayout.LayoutParams(-1,-1))
+        } else {
+            illustration.addView(u.text("HD  4K  ▶",68,u.violet,true,Gravity.CENTER),
+                FrameLayout.LayoutParams(-1,-1))
+        }
         center.addView(illustration,LinearLayout.LayoutParams(-1,u.dp(250)))
         center.addView(u.space(30))
         val headings=listOf("Download Videos\nfrom All Platforms",
