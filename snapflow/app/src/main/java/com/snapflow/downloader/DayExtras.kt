@@ -75,9 +75,18 @@ class DayExtras(private val a:SnapDayActivity) {
     private fun audio() {
         label("NOW PLAYING (MP3)",14,true,u.white)
         gap(24)
-        b.addView(u.poster("🎧","Your Music","Offline audio library",
-            Color.parseColor("#ED2775"),Color.parseColor("#321B78")),
-            LinearLayout.LayoutParams(-1,u.dp(278)))
+        val album=FrameLayout(a).apply {
+            background=u.gradient(Color.parseColor("#25103D"),Color.parseColor("#171124"),18)
+        }
+        val art=android.widget.ImageView(a).apply {
+            setImageResource(R.drawable.snapday_mp3_art)
+            scaleType=android.widget.ImageView.ScaleType.CENTER_CROP
+            background=u.shape(u.navy,19)
+            clipToOutline=true
+            contentDescription="MP3 player album art"
+        }
+        album.addView(art,FrameLayout.LayoutParams(u.dp(220),u.dp(220),Gravity.CENTER))
+        b.addView(album,LinearLayout.LayoutParams(-1,u.dp(278)))
         gap(20)
         val name=a.audioUri?.lastPathSegment?.takeLast(40) ?: "Choose a song"
         b.addView(u.text(name,21,u.white,true,Gravity.CENTER))
