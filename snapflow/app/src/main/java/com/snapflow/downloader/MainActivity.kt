@@ -31,6 +31,7 @@ class MainActivity : Activity() {
     private lateinit var urlField: EditText
     private var activeTab = "Home"
     private var checking = false
+    private var pendingMedia: DownloadEngine.Prepared? = null
     private val handler = Handler(Looper.getMainLooper())
     private val bgColor = Color.rgb(10, 12, 24)
     private val cardColor = Color.rgb(25, 28, 48)
@@ -122,6 +123,7 @@ class MainActivity : Activity() {
         when (tab) {
             "Home" -> home()
             "Downloads" -> downloads()
+            "Quality" -> quality()
             "Player" -> player()
             else -> settings()
         }
@@ -203,11 +205,10 @@ class MainActivity : Activity() {
         Thread {
             try {
                 val media = engine.prepare(url)
-                val id = engine.enqueue(media)
                 runOnUiThread {
                     checking = false
-                    toast("Video queued. Download ID: " + id)
-                    showTab("Downloads")
+                    pendingMedia = media
+                    showTab("Quality")
                 }
             } catch (e: Exception) {
                 runOnUiThread {
@@ -216,6 +217,37 @@ class MainActivity : Activity() {
                 }
             }
         }.start()
+    }
+
+    private fun quality() {
+        val media = pendingMedia
+        if (media == null) { showTab("Home"); return }
+        addTitle("Download video", "Choose available quality")
+        val preview = card()
+        preview.addView(label("▣  Video source verified", 19, white, true))
+        preview.addView(gap(10))
+        preview.addView(label("File type: " + media.extension.uppercase(), 14, muted))
+        preview.addView(label("Size: " +
+            (if (media.size > 0) (media.size / 1024L / 1024L).toString() + " MB" else "Not provided by server"), 14, muted))
+        content.addView(preview)
+        content.addView(gap(16))
+        content.addView(label("Available quality", 18, white, true))
+        content.addView(gap(8))
+        val original = card()
+        original.addView(label("◉  Original source quality", 16, purple, true))
+        original.addView(gap(7))
+        original.addView(label("This URL provides one downloadable file. Extra resolutions are not invented.", 13, muted))
+        content.addView(original)
+        content.addView(gap(22))
+        content.addView(button("↓  Start download", true) {
+            try {
+                val id = engine.enqueue(media)
+                pendingMedia = null
+                toast("Video queued: " + id)
+                showTab("Downloads")
+            } catch (e: Exception) { toast(e.message ?: "Could not start download") }
+        })
+        content.addView(button("←  Back to home") { showTab("Home") })
     }
 
     private fun downloads() {
