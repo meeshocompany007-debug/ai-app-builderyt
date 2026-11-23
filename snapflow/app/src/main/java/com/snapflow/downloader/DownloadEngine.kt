@@ -31,6 +31,14 @@ class DownloadEngine(private val context: Context) {
             uri.path.orEmpty().lowercase(Locale.ROOT).endsWith(".webm") -> "webm"
             else -> null
         }
+        // Direct MP4/WebM URLs can be handed to Android DownloadManager directly.
+        // Many real CDN servers reject HEAD even when GET works. The DownloadManager
+        // performs the actual GET and exposes the real HTTP error if it fails.
+        if (inferred != null) {
+            return Prepared(url, if (inferred == "mp4") "video/mp4" else "video/webm",
+                inferred, -1L)
+        }
+        // For extensionless signed links we check advertised media type.
         // Perform network checks only from a background thread.
         val connection = (URL(url).openConnection() as HttpURLConnection).apply {
             requestMethod = "HEAD"
