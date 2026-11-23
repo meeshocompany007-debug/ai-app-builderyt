@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "SnapFlow"
+rootProject.name = "SnapDay"
 include(":app")
