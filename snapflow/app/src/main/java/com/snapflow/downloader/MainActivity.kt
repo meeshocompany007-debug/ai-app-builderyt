@@ -297,6 +297,21 @@ class MainActivity : Activity() {
 
     private fun downloads() {
         addTitle("My downloads", "Real transfer progress from Android")
+        if (siteBusy || siteStatus.isNotBlank()) {
+            val site = card()
+            site.addView(label("Website media", 17, white, true))
+            site.addView(gap(9))
+            site.addView(label(siteStatus, 13, muted))
+            if (siteBusy) {
+                val progress = ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal)
+                progress.max = 100
+                progress.progress = siteProgress
+                progress.progressTintList = ColorStateList.valueOf(purple)
+                site.addView(progress)
+            }
+            content.addView(site)
+            content.addView(gap(12))
+        }
         val items = try { engine.history() } catch (e: Exception) {
             content.addView(label("Could not load downloads: " + e.message, 13, muted))
             return
@@ -362,8 +377,17 @@ class MainActivity : Activity() {
     }
     private fun player() {
         addTitle("Video player", "Play downloaded videos offline")
+        val siteVideos = siteEngine.savedVideos()
+        if (siteVideos.isNotEmpty()) {
+            content.addView(label("Saved website videos", 17, white, true))
+            content.addView(gap(10))
+            siteVideos.forEach { video ->
+                content.addView(button("▷  " + video.name) { playLocalVideo(video.file) })
+            }
+            content.addView(gap(20))
+        }
         val items = engine.history().filter { it.status == DownloadManager.STATUS_SUCCESSFUL }
-        if (items.isEmpty()) {
+        if (items.isEmpty() && siteVideos.isEmpty()) {
             val block = card()
             block.addView(label("▷  No saved videos", 19, white, true))
             block.addView(gap(8))
@@ -373,6 +397,22 @@ class MainActivity : Activity() {
             content.addView(button("▷  " + it.title) { openVideo(it.id) })
         }
     }
+    private fun playLocalVideo(file: File) {
+        root.removeAllViews()
+        root.addView(button("←  Back to library") { showTab("Player") })
+        val video = VideoView(this)
+        val controls = MediaController(this)
+        controls.setAnchorView(video)
+        video.setMediaController(controls)
+        video.setVideoPath(file.absolutePath)
+        root.addView(video, LinearLayout.LayoutParams(-1, 0, 1f))
+        video.setOnErrorListener { _, _, _ ->
+            toast("Playback failed: unsupported media codec")
+            true
+        }
+        video.setOnPreparedListener { video.start() }
+    }
+
     private fun settings() {
         addTitle("Settings", "Control downloading and storage")
         val block = card()
