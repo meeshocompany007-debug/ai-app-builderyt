@@ -15,6 +15,29 @@ import java.io.FileOutputStream
 /** Emulator smoke verification that all user-approved SnapDay screens actually render. */
 @RunWith(AndroidJUnit4::class)
 class SnapDayUiSmokeTest {
+    @Test fun onboardingButtonsAndVectorArtworkAreVisible() {
+        val instrumentation=InstrumentationRegistry.getInstrumentation()
+        ActivityScenario.launch(SnapDayActivity::class.java).use { scenario ->
+            for(screen in listOf("intro1","intro2","intro3")) {
+                scenario.onActivity { a -> a.go(screen) }
+                instrumentation.waitForIdleSync()
+                scenario.onActivity { a ->
+                    val cta=a.findViewById<ViewGroup>(android.R.id.content)
+                        .findViewWithTag<android.view.View>("snapday_onboarding_cta")
+                    val art=a.findViewById<ViewGroup>(android.R.id.content)
+                        .findViewWithTag<android.view.View>("snapday_onboarding_vector")
+                    assertTrue("Missing HD vector illustration on "+screen, art is DayIllustration)
+                    assertTrue("Missing Next/Get Started on "+screen, cta!=null)
+                    val r=android.graphics.Rect()
+                    assertTrue("CTA not visible on "+screen, cta.getGlobalVisibleRect(r))
+                    assertTrue("CTA too small to tap on "+screen, r.height()>=a.ui.dp(44))
+                    assertTrue("CTA covered by bottom system bar on "+screen,
+                        r.bottom <= a.window.decorView.rootView.height - a.ui.dp(8))
+                }
+            }
+        }
+    }
+
     @Test fun allStoryboardScreensCanOpen() {
         val pages=listOf("intro1","intro2","intro3","login","email","signup","complete",
             "home","video","quality","floatGuide","audio","downloads","player","files",
