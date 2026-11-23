@@ -1,30 +1,52 @@
-# SnapFlow Android — milestone 1
+# SnapDay — Android Video Downloader & Player (v0.5)
 
-Native Kotlin Android app implementing **actual direct HTTPS MP4/WebM downloads** through Android DownloadManager. This is not a YouTube/Instagram/Facebook extraction client. It does not bypass DRM, login, API limits or platform terms.
+**Approved visual source:** [DESIGN_REFERENCE_SNAPDAY.md](DESIGN_REFERENCE_SNAPDAY.md)
+**App launcher:** `SnapDayActivity.kt`. The rejected old single-screen `MainActivity.kt` was deleted.
+**Brand:** SnapDay, pink-violet rounded-square play/download logo, #7923E8, white Home, dark navy media.
+
+## Screens
+1 Splash
+2 Onboarding 1
+3 Onboarding 2
+4 Onboarding 3
+5 Optional Login
+6 Email Login
+7 Create Account
+8 Skip/Success
+9 Home
+10 Video Player
+11 Download Video Options
+12 Floating Download Button
+13 MP3 Player
+14 Download Manager
+15 Files
+16 Settings
+17 Browser
+18 History
+19 About/Profile
+20 Premium (optional ₹99/month concept)
 
 ## Build
-Prerequisites: JDK 17, Android SDK 35, Gradle 8.9.
+GitHub Actions `SnapDay Android APK` on `feature/snapflow-android-downloader`.
+The successful build uploads `SnapDay-debug-APK` containing `app-debug.apk`.
+Android tests in `app/src/androidTest` validate real authorized MP4 bytes, on-device site-engine initialization and page navigation; no mock video-transfer completion.
 
-```bash
-cd snapflow
-gradle :app:assembleDebug
-```
+## Real downloading
+- Direct HTTPS MP4/WebM: Android DownloadManager, saves under `Downloads/SnapFlow`. This storage subfolder is retained for backwards compatibility; the UI brand is SnapDay.
+- Site adapter: on-device yt-dlp library, working with sources that allow downloading. Does **not** guarantee YouTube/Instagram/Facebook links, DRM content, paid/private media or login-restricted streams.
+- Default public-domain smoke test URL: `https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4`.
+- The UI only offers source formats that are actually known; no fake resolution options.
 
-APK: `snapflow/app/build/outputs/apk/debug/app-debug.apk`.
+## Planned / unavailable services
+- Google and email login require a real authentication backend. Buttons report this; Skip works.
+- Premium ₹99/month requires Google Play Billing plus receipt verification. No real charge is made in this build.
+- Content-discovery thumbnails from the user's uploaded image are **visual references**, not live platform feeds or promises of downloadable content.
+- Expanded MP3 conversion/subtitles require testing and source permission.
 
-GitHub Actions builds it from the `feature/snapflow-android-downloader` branch and uploads the binary as an artifact after a successful build.
+## Installing
+Download `SnapDay-debug-APK` from the GitHub Actions run, unzip, install `app-debug.apk`.
+The debug signing key may differ from old builds; Android may require uninstalling the old debug APK first. Back up app-owned media before uninstalling because private app data may be removed.
+Verify every navigation screen and a real, authorized download on the device.
 
-## Real device acceptance test
-1. Install APK and open SnapFlow.
-2. Use a **direct, HTTPS** URL ending in `.mp4` or `.webm` from a source that permits downloading. URL must not be a website/watch page.
-3. Tap Start Download. Watch queued/running/complete status and the Android system notification.
-4. Check the actual video in `Downloads/SnapFlow`, use Play and verify it plays offline.
-5. Test invalid URL, interruption and 404 separately. A queued status alone does not prove download success.
-
-## Limits and roadmap
-- Milestone 1 is direct files only. Does not resolve YouTube, Instagram or Facebook page URLs.
-- No server is needed for direct downloads.
-- No pause/resume promises: native DownloadManager controls its own retry behavior.
-- A file's real type and integrity are not verified before enqueue; server errors show a failed status.
-- OS/account/network/provider constraints and phone installation must be tested in real conditions.
-- Next: instrumented tests, content-type validation, improved file naming, polished UI and licensed-source adapters.
+## Long-term maintenance
+A 20-year service life is possible only with frequent Android SDK upgrades, security patches, backend and API maintenance, backups, licensing reviews, regression testing and changes in platform terms. Review dependencies monthly and test major Android updates.
