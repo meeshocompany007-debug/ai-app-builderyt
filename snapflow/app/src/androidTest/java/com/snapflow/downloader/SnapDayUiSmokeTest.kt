@@ -32,6 +32,12 @@ class SnapDayUiSmokeTest {
             Thread.sleep(800)
             val bitmap=InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
             assertTrue("Home screenshot must not be empty",bitmap.width>200 && bitmap.height>350)
+            val samplePoints=listOf(0.18f,0.28f,0.45f,0.68f,0.83f)
+            val screenVisible=samplePoints.any { fraction ->
+                val pixel=bitmap.getPixel(bitmap.width/2,(bitmap.height*fraction).toInt())
+                android.graphics.Color.red(pixel)>100 || android.graphics.Color.green(pixel)>100 || android.graphics.Color.blue(pixel)>100
+            }
+            assertTrue("SnapDay Home screenshot is blank/black; UI rendering must be fixed",screenVisible)
             scenario.onActivity { a ->
                 FileOutputStream(File(a.filesDir,"snapday-home.png")).use { output ->
                     bitmap.compress(Bitmap.CompressFormat.PNG,100,output)
