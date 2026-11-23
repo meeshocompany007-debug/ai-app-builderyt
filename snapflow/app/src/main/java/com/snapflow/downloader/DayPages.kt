@@ -120,7 +120,20 @@ class DayPages(private val a:SnapDayActivity) {
         space(9)
         text("जीवन में सफलता का सच्चा मंत्र | Satsang",15,true)
         text("Hindi Satsang • Explore source videos",12,false,u.muted)
-        space(21)
+        space(17)
+        // Accessible, optional premium card in the middle of Home (not a paywall).
+        val premium=u.panel(u.lilac,13,17,u.line)
+        val premiumRow=u.row()
+        premiumRow.addView(u.icon("♛",u.white,u.violet,42))
+        val premiumText=u.col().apply {setPadding(u.dp(11),0,0,0)}
+        premiumText.addView(u.text("SnapDay Premium",16,u.ink,true))
+        premiumText.addView(u.text("₹99/month • Optional plan preview",12,u.muted))
+        premiumRow.addView(premiumText,LinearLayout.LayoutParams(0,-2,1f))
+        premium.addView(premiumRow)
+        premium.addView(u.space(9))
+        premium.addView(u.button("View Premium Plan  →",false){a.go("premium")})
+        b.addView(premium)
+        space(20)
         text(if(a.category=="Music")"Popular Music ♫" else "Popular Videos 🔥",20,true)
         space(12)
         mediaRow("Hindi songs and music videos","Browse the original music website","♫",
