@@ -22,10 +22,18 @@ import android.widget.ScrollView
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.VideoView
+import android.widget.MediaController
+import java.io.File
+import java.net.URI
 
 /** Dark violet interface matched to the agreed SnapFlow preview, backed by real transfers. */
 class MainActivity : Activity() {
     private lateinit var engine: DownloadEngine
+    private lateinit var siteEngine: SiteMediaEngine
+    private var siteBusy = false
+    private var siteProgress = 0
+    private var siteStatus = ""
     private lateinit var root: LinearLayout
     private lateinit var content: LinearLayout
     private lateinit var urlField: EditText
@@ -48,6 +56,7 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         engine = DownloadEngine(this)
+        siteEngine = SiteMediaEngine(this)
         window.statusBarColor = bgColor
         window.navigationBarColor = bgColor
         root = LinearLayout(this).apply {
@@ -193,15 +202,20 @@ class MainActivity : Activity() {
         content.addView(info)
         content.addView(gap(20))
         content.addView(label("Save location", 16, white, true))
-        content.addView(label("Phone storage / Downloads / SnapFlow", 13, muted))
+        content.addView(label("Direct files: Downloads/SnapFlow • Website media: app library", 13, muted))
     }
 
     private fun startDownload() {
         if (checking) return
         val url = urlField.text.toString().trim()
         if (url.isBlank()) { toast("Paste a direct video link first."); return }
+        val path = try { URI(url).path.orEmpty().lowercase() } catch (_: Exception) { "" }
+        if (!path.endsWith(".mp4") && !path.endsWith(".webm")) {
+            startSiteDownload(url)
+            return
+        }
         checking = true
-        toast("Checking video URL...")
+        toast("Checking direct video URL...")
         Thread {
             try {
                 val media = engine.prepare(url)
@@ -343,13 +357,13 @@ class MainActivity : Activity() {
         block.addView(gap(10))
         block.addView(label("Saved videos: Downloads/SnapFlow", 13, muted))
         block.addView(gap(12))
-        block.addView(label("SnapFlow v0.2  •  Direct MP4 / WebM", 13, muted))
+        block.addView(label("SnapFlow v0.4 • Direct and permitted website media", 13, muted))
         content.addView(block)
         content.addView(gap(15))
         val about = card()
         about.addView(label("Supported media", 17, white, true))
         about.addView(gap(8))
-        about.addView(label("Only content you are authorized to download. DRM, login-protected streams and social platform pages are not supported.", 13, muted))
+        about.addView(label("Save only media you own or may download. Platform permissions still apply. No DRM or login bypass.", 13, muted))
         content.addView(about)
     }
     private fun toast(s: String) = Toast.makeText(this, s, Toast.LENGTH_LONG).show()
