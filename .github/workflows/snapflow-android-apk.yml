@@ -1,4 +1,4 @@
-name: SnapFlow Android APK
+name: SnapDay Android APK
 on:
   push:
     branches:
@@ -44,7 +44,7 @@ jobs:
       - name: Publish downloadable APK
         uses: actions/upload-artifact@v4
         with:
-          name: SnapFlow-debug-APK
+          name: SnapDay-debug-APK
           path: snapflow/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
@@ -73,4 +73,15 @@ jobs:
           profile: pixel_4
           disable-animations: true
           emulator-boot-timeout: 600
-          script: cd snapflow && gradle --no-daemon :app:connectedDebugAndroidTest
+          script: |
+            cd snapflow
+            gradle --no-daemon :app:connectedDebugAndroidTest
+            adb exec-out run-as com.snapflow.downloader cat files/snapday-home.png > snapday-home-emulator.png || true
+      - name: Upload SnapDay Home screenshot for UI review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SnapDay-UI-screenshot
+          path: snapflow/snapday-home-emulator.png
+          if-no-files-found: warn
+          retention-days: 14
