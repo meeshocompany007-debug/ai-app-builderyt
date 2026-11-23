@@ -51,8 +51,12 @@ class DayIntro(private val a: SnapDayActivity) {
             }
             illustration.addView(picture,FrameLayout.LayoutParams(-1,-1))
         } else {
-            illustration.addView(u.text("HD  4K  ▶",68,u.violet,true,Gravity.CENTER),
-                FrameLayout.LayoutParams(-1,-1))
+            val quality=android.widget.ImageView(a).apply {
+                setImageResource(R.drawable.snapday_onboard_quality)
+                scaleType=android.widget.ImageView.ScaleType.FIT_CENTER
+                contentDescription="HD and 4K video quality selection illustration"
+            }
+            illustration.addView(quality,FrameLayout.LayoutParams(-1,-1))
         }
         center.addView(illustration,LinearLayout.LayoutParams(-1,u.dp(250)))
         center.addView(u.space(30))
