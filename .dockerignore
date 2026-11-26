@@ -1,6 +1,0 @@
-.git
-data
-.env
-backups
-build
-*.apk
