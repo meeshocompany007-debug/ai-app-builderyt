@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:fitsSystemWindows="true" android:background="#70001C">
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="52dp" android:gravity="center_vertical" android:paddingHorizontal="16dp"
+        android:text="Welcome" android:textStyle="bold" android:textSize="22sp" android:textColor="#FFFFFF"/>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:fillViewport="true" android:background="#FFF9ED">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:gravity="center_horizontal" android:padding="12dp">
+            <ImageView android:layout_width="144dp" android:layout_height="144dp"
+                android:layout_marginTop="20dp" android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="AiAlertpay" android:textStyle="bold" android:textSize="48sp" android:textColor="#70001C"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="UPI Mobile Soundbox" android:textStyle="bold" android:textSize="24sp" android:textColor="#19130E"/>
+            <ImageView android:id="@+id/hero" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" android:maxHeight="300dp" android:adjustViewBounds="true"
+                android:scaleType="centerCrop" android:src="@drawable/welcome_shopkeeper"
+                android:background="@drawable/photo_shape" android:importantForAccessibility="no"/>
+        </LinearLayout>
+    </ScrollView>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="10dp" android:background="#FFF9ED">
+        <Button android:id="@+id/start" android:layout_width="match_parent" android:layout_height="52dp"
+            android:enabled="false" android:background="@drawable/start_shape" android:text="Start →"
+            android:textAllCaps="false" android:textSize="22sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
+    </FrameLayout>
+</LinearLayout>
