@@ -6,6 +6,10 @@
             android:layout_height="match_parent" android:contentDescription="Back" android:text="←" android:textColor="#FFFFFF"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:gravity="center" android:text="Subscription" android:textSize="22sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
+        <Space android:layout_width="0dp" android:layout_weight="1" android:layout_height="1dp"/>
+        <Button android:id="@+id/setup_audio" style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content" android:layout_height="48dp" android:text="Alert setup"
+            android:textAllCaps="false" android:textColor="#FFFFFF"/>
     </LinearLayout>
     <ScrollView android:background="#FFF9ED" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
         <LinearLayout android:orientation="vertical" android:gravity="center_horizontal" android:padding="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">

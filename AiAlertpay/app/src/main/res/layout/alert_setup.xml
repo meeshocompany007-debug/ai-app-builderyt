@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:fitsSystemWindows="true"
+    android:background="#70001C" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="52dp">
+        <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle" android:contentDescription="Back" android:text="←" android:textColor="#FFFFFF" android:layout_width="56dp" android:layout_height="match_parent"/>
+        <TextView android:text="Alert setup" android:textColor="#FFFFFF" android:textSize="22sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <ScrollView android:background="#FFF9ED" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:padding="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:src="@mipmap/ic_launcher" android:importantForAccessibility="no" android:layout_width="96dp" android:layout_height="96dp"/>
+        <TextView android:text="AiAlertpay" android:textSize="30sp" android:textStyle="bold" android:textColor="#70001C" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:text="UPI Mobile Soundbox" android:layout_marginBottom="16dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="10dp" android:layout_marginBottom="8dp" android:background="@drawable/setup_card">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Payment notification access" android:textSize="16sp" android:textStyle="bold" android:textColor="#231A1C"/>
+                <Button android:id="@+id/access" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Open settings" android:textAllCaps="false" android:textColor="#70001C"/>
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Allow access to detect payment alerts from your UPI apps."/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="10dp" android:layout_marginBottom="8dp" android:background="@drawable/setup_card">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Show notifications" android:textSize="16sp" android:textStyle="bold" android:textColor="#231A1C"/>
+                <Button android:id="@+id/post" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Allow" android:textAllCaps="false" android:textColor="#70001C"/>
+            </LinearLayout>
+            
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="10dp" android:layout_marginBottom="8dp" android:background="@drawable/setup_card">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Battery settings" android:textSize="16sp" android:textStyle="bold" android:textColor="#231A1C"/>
+                <Button android:id="@+id/battery" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Open" android:textAllCaps="false" android:textColor="#70001C"/>
+            </LinearLayout>
+            
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="10dp" android:layout_marginBottom="8dp" android:background="@drawable/setup_card">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Autostart" android:textSize="16sp" android:textStyle="bold" android:textColor="#231A1C"/>
+                <Button android:id="@+id/autostart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Device settings" android:textAllCaps="false" android:textColor="#70001C"/>
+            </LinearLayout>
+            
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="10dp" android:layout_marginBottom="8dp" android:background="@drawable/setup_card">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Alert volume" android:textSize="16sp" android:textStyle="bold" android:textColor="#231A1C"/>
+                
+            </LinearLayout>
+            <SeekBar android:id="@+id/volume" android:layout_width="match_parent" android:layout_height="48dp" android:max="100" android:contentDescription="Alert volume"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="10dp" android:layout_marginBottom="8dp" android:background="@drawable/setup_card">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Test voice" android:textSize="16sp" android:textStyle="bold" android:textColor="#231A1C"/>
+                <Button android:id="@+id/test" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Play" android:textAllCaps="false" android:textColor="#70001C"/>
+            </LinearLayout>
+            
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>
