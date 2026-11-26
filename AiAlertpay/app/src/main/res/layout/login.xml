@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fitsSystemWindows="true" android:orientation="vertical" android:background="#70001C">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical">
+        <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle"
+            android:layout_width="56dp" android:layout_height="match_parent" android:text="←"
+            android:contentDescription="Back" android:textColor="#FFFFFF" android:textSize="24sp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Login" android:textSize="22sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:background="#FFF9ED" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="16dp" android:orientation="vertical" android:gravity="center_horizontal">
+            <ImageView android:layout_width="136dp" android:layout_height="136dp" android:layout_marginTop="32dp"
+                android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="AiAlertpay" android:textColor="#70001C" android:textSize="44sp" android:textStyle="bold"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="UPI Mobile Soundbox" android:textColor="#17130D" android:textSize="22sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="42dp" android:labelFor="@+id/phone" android:text="Login with mobile number"
+                android:textSize="22sp" android:textStyle="bold" android:textColor="#17130D"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="22dp" android:background="@drawable/phone_outline" android:gravity="center_vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:paddingHorizontal="14dp" android:text="+91" android:textSize="19sp" android:textStyle="bold"/>
+                <EditText android:id="@id/phone" android:layout_width="0dp" android:layout_weight="1"
+                    android:layout_height="wrap_content" android:minHeight="54dp" android:padding="8dp"
+                    android:background="@android:color/transparent" android:hint="Enter mobile number"
+                    android:inputType="phone" android:digits="0123456789" android:maxLength="10"
+                    android:imeOptions="actionDone" android:singleLine="true"/>
+            </LinearLayout>
+            <TextView android:id="@+id/feedback" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:paddingTop="8dp" android:accessibilityLiveRegion="polite" android:textColor="#70001C"/>
+        </LinearLayout>
+    </ScrollView>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="10dp" android:background="#FFF9ED">
+        <Button android:id="@+id/continue_button" android:layout_width="match_parent" android:layout_height="52dp"
+            android:background="@drawable/start_shape" android:text="Continue" android:textColor="#FFFFFF"
+            android:textSize="22sp" android:textAllCaps="false"/>
+    </FrameLayout>
+</LinearLayout>

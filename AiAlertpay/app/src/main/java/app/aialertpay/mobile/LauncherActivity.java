@@ -2,6 +2,7 @@ package app.aialertpay.mobile;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Intent;
 
 public final class LauncherActivity extends Activity {
     @Override
@@ -9,5 +10,7 @@ public final class LauncherActivity extends Activity {
         super.onCreate(state);
         setContentView(R.layout.welcome);
         findViewById(R.id.hero).setClipToOutline(true);
+        findViewById(R.id.start).setOnClickListener(view ->
+                startActivity(new Intent(this, LoginActivity.class)));
     }
 }

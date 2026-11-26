@@ -23,7 +23,7 @@
     <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:padding="10dp" android:background="#FFF9ED">
         <Button android:id="@+id/start" android:layout_width="match_parent" android:layout_height="52dp"
-            android:enabled="false" android:background="@drawable/start_shape" android:text="Start →"
+            android:background="@drawable/start_shape" android:text="Start →"
             android:textAllCaps="false" android:textSize="22sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
     </FrameLayout>
 </LinearLayout>
