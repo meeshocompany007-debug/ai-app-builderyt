@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:fitsSystemWindows="true" android:orientation="vertical" android:background="#70001C">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical">
+        <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle"
+            android:layout_width="56dp" android:layout_height="match_parent" android:text="←"
+            android:contentDescription="Back" android:textColor="#FFFFFF" android:textSize="24sp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Verify number" android:textSize="22sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
+        android:background="#FFF9ED" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:padding="16dp" android:orientation="vertical" android:gravity="center_horizontal">
+            <ImageView android:layout_width="136dp" android:layout_height="136dp" android:layout_marginTop="32dp"
+                android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="AiAlertpay" android:textColor="#70001C" android:textSize="44sp" android:textStyle="bold"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="UPI Mobile Soundbox" android:textColor="#17130D" android:textSize="22sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginTop="42dp" android:labelFor="@+id/otp" android:text="Enter 6-digit OTP"
+                android:textSize="22sp" android:textStyle="bold" android:textColor="#17130D"/>
+            <TextView android:id="@+id/status" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp" android:accessibilityLiveRegion="polite"/>
+            <EditText android:id="@id/otp" android:layout_width="match_parent" android:layout_height="64dp"
+                android:gravity="center" android:inputType="number" android:digits="0123456789"
+                android:maxLength="6" android:letterSpacing="0.35" android:textSize="24sp"
+                android:saveEnabled="false" android:singleLine="true" android:hint="— — — — — —" android:background="@drawable/phone_outline"/>
+            <Button android:id="@+id/resend" style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Resend code"/>
+        </LinearLayout>
+    </ScrollView>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:padding="10dp" android:background="#FFF9ED">
+        <Button android:id="@+id/continue_button" android:layout_width="match_parent" android:layout_height="52dp"
+            android:background="@drawable/start_shape" android:text="Verify" android:textColor="#FFFFFF"
+            android:textSize="22sp" android:textAllCaps="false"/>
+    </FrameLayout>
+</LinearLayout>

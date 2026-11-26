@@ -29,7 +29,8 @@ public final class LoginActivity extends Activity {
             }
             public void afterTextChanged(Editable value) {}
         });
-        next.setOnClickListener(view -> feedback.setText("Number format accepted. OTP verification is not available yet."));
+        next.setOnClickListener(view -> startActivity(new android.content.Intent(this, VerifyActivity.class)
+                .putExtra("number", "+91" + phone.getText().toString())));
         phone.setOnEditorActionListener((view, action, event) -> {
             if (action != EditorInfo.IME_ACTION_DONE) return false;
             if (next.isEnabled()) next.performClick();
