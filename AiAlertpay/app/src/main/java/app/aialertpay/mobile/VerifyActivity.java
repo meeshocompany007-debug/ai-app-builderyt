@@ -132,9 +132,9 @@ public final class VerifyActivity extends Activity {
     }
 
     private void showSuccess() {
-        status.setText("Phone number verified.");
-        verify.setText("Verified");
-        controls();
+        if (isFinishing()) return;
+        startActivity(new android.content.Intent(this, SubscriptionActivity.class));
+        finish();
     }
 
     @Override protected void onStart() {

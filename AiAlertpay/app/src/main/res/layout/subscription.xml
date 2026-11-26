@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:fitsSystemWindows="true" android:background="#70001C"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical">
+        <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle" android:layout_width="56dp"
+            android:layout_height="match_parent" android:contentDescription="Back" android:text="←" android:textColor="#FFFFFF"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="Subscription" android:textSize="22sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
+    </LinearLayout>
+    <ScrollView android:background="#FFF9ED" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal" android:padding="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <ImageView android:layout_width="82dp" android:layout_height="82dp" android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="AiAlertpay" android:textSize="34sp" android:textColor="#70001C" android:textStyle="bold"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="UPI Mobile Soundbox" android:textSize="19sp" />
+            <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginVertical="10dp">
+                <ImageView android:id="@+id/hero" android:layout_width="match_parent" android:layout_height="wrap_content" android:adjustViewBounds="true"
+                    android:maxHeight="272dp" android:scaleType="centerCrop" android:src="@drawable/welcome_shopkeeper" android:background="@drawable/photo_shape" android:importantForAccessibility="no"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="₹20 received" android:textSize="16sp" android:layout_gravity="end|top" android:layout_margin="10dp" android:padding="8dp" android:background="@drawable/photo_shape" android:textColor="#70001C"/>
+            </FrameLayout>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="Choose UPI app" android:textSize="21sp" android:textStyle="bold"/>
+            <LinearLayout android:id="@+id/choices" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="Approve AutoPay in your UPI app." android:textSize="15sp" android:layout_marginVertical="8dp" android:id="@+id/message" android:accessibilityLiveRegion="polite"/>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+        android:gravity="center" android:padding="10dp" android:background="#FFF9ED">
+        <Button android:id="@+id/trial" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="52dp"
+            android:background="@drawable/start_shape" android:text="Start one-day trial · ₹2" android:textSize="20sp" android:textAllCaps="false" android:textColor="#FFFFFF"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="After 1 day: ₹99/month via AutoPay" android:textSize="15sp" android:layout_marginTop="6dp" android:textColor="#302326"/>
+    </LinearLayout>
+</LinearLayout>
