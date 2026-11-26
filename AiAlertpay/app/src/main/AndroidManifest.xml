@@ -1,8 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <queries>
-        <intent><action android:name="android.intent.action.TTS_SERVICE"/></intent>
         <intent>
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="upi" android:host="pay"/>
@@ -10,11 +8,6 @@
     </queries>
     <application android:label="AiAlertpay" android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher" android:theme="@android:style/Theme.Material.Light.NoActionBar">
-        <activity android:name=".AlertSetupActivity" android:exported="false"/>
-        <service android:name=".PaymentNotificationListener" android:exported="false"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter><action android:name="android.service.notification.NotificationListenerService"/></intent-filter>
-        </service>
         <activity android:name=".SubscriptionActivity" android:exported="false"/>
         <activity android:name=".VerifyActivity" android:exported="false" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".LoginActivity" android:exported="false"

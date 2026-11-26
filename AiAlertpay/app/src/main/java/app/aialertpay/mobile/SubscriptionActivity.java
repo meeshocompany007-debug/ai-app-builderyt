@@ -23,8 +23,6 @@ public final class SubscriptionActivity extends Activity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.subscription);
-        findViewById(R.id.setup_audio).setOnClickListener(v ->
-                startActivity(new Intent(this, AlertSetupActivity.class)));
         findViewById(R.id.hero).setClipToOutline(true);
         findViewById(R.id.back).setOnClickListener(v -> finish());
         choices = findViewById(R.id.choices);
