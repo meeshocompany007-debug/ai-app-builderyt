@@ -4,14 +4,18 @@
         <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle" android:contentDescription="Back" android:text="←" android:textColor="#FFFFFF" android:layout_width="56dp" android:layout_height="match_parent"/>
         <TextView android:text="Payment apps" android:textColor="#FFFFFF" android:textSize="22sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </LinearLayout>
-    <ScrollView android:background="#FFF9ED" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ScrollView android:background="#FFF9ED" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
     <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:padding="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">
         <ImageView android:src="@mipmap/ic_launcher" android:importantForAccessibility="no" android:layout_width="96dp" android:layout_height="96dp"/>
         <TextView android:text="AiAlertpay" android:textSize="30sp" android:textStyle="bold" android:textColor="#70001C" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        <TextView android:text="Choose payment apps" android:textColor="#70001C" android:textStyle="bold" android:textSize="22sp" android:layout_marginTop="24dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:text="Apps on this phone" android:textColor="#70001C" android:textStyle="bold" android:textSize="22sp" android:layout_marginTop="24dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <TextView android:text="Select the apps you want voice alerts from." android:textSize="16sp" android:gravity="center" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         <LinearLayout android:id="@+id/app_rows" android:orientation="vertical" android:layout_marginVertical="18dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <Button android:id="@+id/more_apps" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+ More apps" android:textAllCaps="false"/>
         <TextView android:text="Changes are saved automatically." android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </LinearLayout>
     </ScrollView>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#FFF9ED" android:padding="12dp">
+        <Button android:id="@+id/done" android:text="Done" android:textAllCaps="false" android:textColor="#FFFFFF" android:background="@drawable/start_shape" android:layout_width="match_parent" android:layout_height="52dp"/>
+    </FrameLayout>
 </LinearLayout>
