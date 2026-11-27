@@ -1,0 +1,248 @@
+[
+  {
+    "tag": "hi",
+    "name": "Hindi",
+    "engine": "hi",
+    "rupee": "रुपये",
+    "paise": "पैसे",
+    "received": "प्राप्त हुए",
+    "sample": "बीस रुपये प्राप्त हुए।"
+  },
+  {
+    "tag": "bho",
+    "name": "Bhojpuri",
+    "engine": "hi",
+    "rupee": "रुपइया",
+    "paise": "पइसा",
+    "received": "मिलल बा",
+    "sample": "बीस रुपइया मिलल बा।",
+    "digits": [
+      "सुन्ना",
+      "एक",
+      "दू",
+      "तीन",
+      "चार",
+      "पाँच",
+      "छव",
+      "सात",
+      "आठ",
+      "नौ"
+    ]
+  },
+  {
+    "tag": "en",
+    "name": "English",
+    "engine": "en",
+    "rupee": "rupees",
+    "paise": "paise",
+    "received": "received",
+    "sample": "Twenty rupees received."
+  },
+  {
+    "tag": "bn",
+    "name": "Bengali",
+    "engine": "bn",
+    "rupee": "টাকা",
+    "paise": "পয়সা",
+    "received": "পাওয়া গেছে",
+    "sample": "কুড়ি টাকা পাওয়া গেছে।"
+  },
+  {
+    "tag": "mr",
+    "name": "Marathi",
+    "engine": "mr",
+    "rupee": "रुपये",
+    "paise": "पैसे",
+    "received": "मिळाले",
+    "sample": "वीस रुपये मिळाले।"
+  },
+  {
+    "tag": "gu",
+    "name": "Gujarati",
+    "engine": "gu",
+    "rupee": "રૂપિયા",
+    "paise": "પૈસા",
+    "received": "મળ્યા",
+    "sample": "વીસ રૂપિયા મળ્યા."
+  },
+  {
+    "tag": "ta",
+    "name": "Tamil",
+    "engine": "ta",
+    "rupee": "ரூபாய்",
+    "paise": "பைசா",
+    "received": "பெறப்பட்டது",
+    "sample": "இருபது ரூபாய் பெறப்பட்டது."
+  },
+  {
+    "tag": "te",
+    "name": "Telugu",
+    "engine": "te",
+    "rupee": "రూపాయలు",
+    "paise": "పైసలు",
+    "received": "అందాయి",
+    "sample": "ఇరవై రూపాయలు అందాయి."
+  },
+  {
+    "tag": "kn",
+    "name": "Kannada",
+    "engine": "kn",
+    "rupee": "ರೂಪಾಯಿ",
+    "paise": "ಪೈಸೆ",
+    "received": "ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
+    "sample": "ಇಪ್ಪತ್ತು ರೂಪಾಯಿ ಸ್ವೀಕರಿಸಲಾಗಿದೆ."
+  },
+  {
+    "tag": "ml",
+    "name": "Malayalam",
+    "engine": "ml",
+    "rupee": "രൂപ",
+    "paise": "പൈസ",
+    "received": "ലഭിച്ചു",
+    "sample": "ഇരുപത് രൂപ ലഭിച്ചു."
+  },
+  {
+    "tag": "pa",
+    "name": "Punjabi",
+    "engine": "pa",
+    "rupee": "ਰੁਪਏ",
+    "paise": "ਪੈਸੇ",
+    "received": "ਮਿਲੇ",
+    "sample": "ਵੀਹ ਰੁਪਏ ਮਿਲੇ।"
+  },
+  {
+    "tag": "as",
+    "name": "Assamese",
+    "engine": "as",
+    "rupee": "টকা",
+    "paise": "পইচা",
+    "received": "পোৱা গৈছে",
+    "sample": "বিশ টকা পোৱা গৈছে।"
+  },
+  {
+    "tag": "or",
+    "name": "Odia",
+    "engine": "or",
+    "rupee": "ଟଙ୍କା",
+    "paise": "ପଇସା",
+    "received": "ମିଳିଛି",
+    "sample": "କୋଡ଼ିଏ ଟଙ୍କା ମିଳିଛି।"
+  },
+  {
+    "tag": "ne",
+    "name": "Nepali",
+    "engine": "ne",
+    "rupee": "रुपैयाँ",
+    "paise": "पैसा",
+    "received": "प्राप्त भयो",
+    "sample": "बीस रुपैयाँ प्राप्त भयो।"
+  },
+  {
+    "tag": "kok",
+    "name": "Konkani",
+    "engine": "kok",
+    "rupee": "रुपया",
+    "paise": "पैशे",
+    "received": "मेळ्ळे",
+    "sample": "वीस रुपया मेळ्ळे।"
+  },
+  {
+    "tag": "ur",
+    "name": "Urdu",
+    "engine": "ur",
+    "rupee": "روپے",
+    "paise": "پیسے",
+    "received": "موصول ہوئے",
+    "sample": "بیس روپے موصول ہوئے۔"
+  },
+  {
+    "tag": "mai",
+    "name": "Maithili",
+    "engine": "hi",
+    "rupee": "रुपैया",
+    "paise": "पैसा",
+    "received": "भेटल",
+    "sample": "बीस रुपैया भेटल।"
+  },
+  {
+    "tag": "mag",
+    "name": "Magahi",
+    "engine": "hi",
+    "rupee": "रुपइया",
+    "paise": "पइसा",
+    "received": "मिलल",
+    "sample": "बीस रुपइया मिलल।"
+  },
+  {
+    "tag": "awa",
+    "name": "Awadhi",
+    "engine": "hi",
+    "rupee": "रुपइया",
+    "paise": "पइसा",
+    "received": "मिले अहैं",
+    "sample": "बीस रुपइया मिले अहैं।"
+  },
+  {
+    "tag": "bra",
+    "name": "Braj",
+    "engine": "hi",
+    "rupee": "रुपया",
+    "paise": "पैसा",
+    "received": "मिले हैं",
+    "sample": "बीस रुपया मिले हैं।"
+  },
+  {
+    "tag": "mwr",
+    "name": "Marwari",
+    "engine": "hi",
+    "rupee": "रुपिया",
+    "paise": "पैसा",
+    "received": "मिळिया",
+    "sample": "बीस रुपिया मिळिया।"
+  },
+  {
+    "tag": "hne",
+    "name": "Chhattisgarhi",
+    "engine": "hi",
+    "rupee": "रुपिया",
+    "paise": "पइसा",
+    "received": "मिलिस",
+    "sample": "बीस रुपिया मिलिस।"
+  },
+  {
+    "tag": "bgc",
+    "name": "Haryanvi",
+    "engine": "hi",
+    "rupee": "रुपये",
+    "paise": "पैसे",
+    "received": "मिले सैं",
+    "sample": "बीस रुपये मिले सैं।"
+  },
+  {
+    "tag": "doi",
+    "name": "Dogri",
+    "engine": "hi",
+    "rupee": "रपे",
+    "paise": "पैसे",
+    "received": "थ्होए",
+    "sample": "बीह रपे थ्होए।"
+  },
+  {
+    "tag": "sa",
+    "name": "Sanskrit",
+    "engine": "hi",
+    "rupee": "रूप्यकाणि",
+    "paise": "पैसाः",
+    "received": "प्राप्तानि",
+    "sample": "विंशतिः रूप्यकाणि प्राप्तानि।"
+  },
+  {
+    "tag": "sd",
+    "name": "Sindhi",
+    "engine": "hi",
+    "rupee": "रुपिया",
+    "paise": "पैसा",
+    "received": "मिलिया",
+    "sample": "वीह रुपिया मिलिया।"
+  }
+]

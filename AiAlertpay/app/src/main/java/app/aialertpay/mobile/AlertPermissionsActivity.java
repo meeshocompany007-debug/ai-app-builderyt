@@ -11,14 +11,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.speech.tts.TextToSpeech;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Toast;
-import java.util.Locale;
 
 public final class AlertPermissionsActivity extends Activity {
-    private TextToSpeech speech;
     private SeekBar volume;
 
     @Override protected void onCreate(Bundle state) {
@@ -49,16 +46,7 @@ public final class AlertPermissionsActivity extends Activity {
                 if (user) getSharedPreferences("alerts", MODE_PRIVATE).edit().putInt("volume", value).apply();
             }
         });
-        Button test = findViewById(R.id.test);
-        test.setEnabled(false);
-        speech = new TextToSpeech(this, status -> runOnUiThread(() -> {
-            if (isDestroyed() || speech == null) return;
-            if (status != TextToSpeech.SUCCESS) { toast("Voice engine unavailable."); return; }
-            test.setEnabled(true);
-        }));
-        test.setOnClickListener(v -> {
-            VoiceSample.play(this, speech);
-        });
+        findViewById(R.id.test).setOnClickListener(v -> VoiceSample.play(this));
     }
 
     @Override protected void onResume() {
@@ -99,8 +87,4 @@ public final class AlertPermissionsActivity extends Activity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-    @Override protected void onDestroy() {
-        if (speech != null) { speech.stop(); speech.shutdown(); }
-        super.onDestroy();
-    }
 }

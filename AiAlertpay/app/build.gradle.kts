@@ -23,3 +23,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-auth")
 }
+
+val voiceAssets = layout.buildDirectory.dir("generated/receiptAudio")
+val generateReceiptAudio by tasks.registering(Exec::class) {
+    val generator = rootProject.file("voices/generate.py")
+    inputs.files(generator, rootProject.file("voices/catalog.json"))
+    outputs.dir(voiceAssets)
+    commandLine("python3", generator.absolutePath, voiceAssets.get().asFile.absolutePath)
+}
+android.sourceSets["main"].assets.srcDir(voiceAssets)
+tasks.named("preBuild").configure { dependsOn(generateReceiptAudio) }

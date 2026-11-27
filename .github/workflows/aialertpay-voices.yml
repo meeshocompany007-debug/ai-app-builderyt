@@ -1,0 +1,37 @@
+name: AiAlertpay voice APK
+on:
+  push:
+    paths:
+      - 'AiAlertpay/**'
+      - '.github/workflows/aialertpay-voices.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - run: sudo apt-get update -qq && sudo apt-get install -y espeak-ng
+      - run: gradle -p AiAlertpay assembleDebug
+      - name: Verify all 26 offline packs in APK
+        run: |
+          python3 - <<'PY'
+          import json, zipfile
+          catalog = json.load(open('AiAlertpay/voices/catalog.json'))
+          with zipfile.ZipFile('AiAlertpay/app/build/outputs/apk/debug/app-debug.apk') as apk:
+              for row in catalog:
+                  for clip in [*range(10), 'rupee', 'paise', 'received', 'sample']:
+                      assert len(apk.read(f'assets/voices/{row["tag"]}/{clip}.pcm')) > 1024
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AiAlertpay-debug
+          path: AiAlertpay/app/build/outputs/apk/debug/app-debug.apk
