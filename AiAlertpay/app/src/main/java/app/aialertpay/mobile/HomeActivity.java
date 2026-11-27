@@ -30,6 +30,7 @@ public final class HomeActivity extends Activity {
         super.onCreate(state);
         setContentView(R.layout.home);
         receipts = new Receipts(this);
+        findViewById(R.id.open_qr).setOnClickListener(v -> startActivity(new android.content.Intent(this, PaymentQrActivity.class)));
         if (state != null && state.containsKey("day")) chosen = LocalDate.ofEpochDay(state.getLong("day"));
         if (state != null) {
             period = state.getInt("period");

@@ -20,6 +20,8 @@ if (file("google-services.json").isFile) {
 }
 
 dependencies {
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("androidx.core:core:1.13.1")
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-auth")
 }
