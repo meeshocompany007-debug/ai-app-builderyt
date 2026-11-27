@@ -30,7 +30,10 @@ public final class PaymentAppsActivity extends Activity {
         sources = getSharedPreferences("payment_sources", MODE_PRIVATE);
         setContentView(R.layout.payment_apps);
         findViewById(R.id.back).setOnClickListener(v -> finish());
-        findViewById(R.id.done).setOnClickListener(v -> startActivity(new Intent(this, VoiceLanguageActivity.class)));
+        findViewById(R.id.done).setOnClickListener(v -> {
+            if (getIntent().getBooleanExtra(SettingsActivity.EDIT, false)) finish();
+            else startActivity(new Intent(this, VoiceLanguageActivity.class));
+        });
         findViewById(R.id.more_apps).setOnClickListener(v -> showMore());
     }
 

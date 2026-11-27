@@ -31,6 +31,10 @@ public final class TeamActivity extends Activity {
         list.setAdapter(adapter);
         refresh();
         findViewById(R.id.add_member).setOnClickListener(v -> addMember());
+        findViewById(R.id.open_settings).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(this, SettingsActivity.class));
+            finish();
+        });
         findViewById(R.id.open_collection).setOnClickListener(v -> finish());
         findViewById(R.id.open_qr).setOnClickListener(v -> {
             startActivity(new Intent(this, PaymentQrActivity.class));

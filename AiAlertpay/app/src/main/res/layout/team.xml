@@ -25,8 +25,9 @@
         </LinearLayout>
     </FrameLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
-        <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:textSize="16sp" android:id="@+id/open_collection" android:text="Collection" android:textColor="#70001C" android:background="#FFFFFF"/>
-        <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:textSize="16sp" android:id="@+id/open_qr" android:text="QR" android:textColor="#70001C" android:background="#FFFFFF"/>
-        <TextView android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:textSize="16sp" android:text="Team" android:textColor="#FFFFFF" android:background="#70001C"/>
+        <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:minWidth="0dp" android:paddingHorizontal="1dp" android:textSize="14sp" android:id="@+id/open_collection" android:text="Collection" android:textColor="#70001C" android:background="#FFFFFF"/>
+        <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:minWidth="0dp" android:paddingHorizontal="1dp" android:textSize="14sp" android:id="@+id/open_qr" android:text="QR" android:textColor="#70001C" android:background="#FFFFFF"/>
+        <TextView android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:minWidth="0dp" android:paddingHorizontal="1dp" android:textSize="14sp" android:text="Team" android:textColor="#FFFFFF" android:background="#70001C"/>
+    <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:minWidth="0dp" android:paddingHorizontal="1dp" android:gravity="center" android:textAllCaps="false" android:textSize="14sp" android:id="@+id/open_settings" android:text="Settings" android:textColor="#70001C" android:background="#FFFFFF"/>
     </LinearLayout>
 </LinearLayout>

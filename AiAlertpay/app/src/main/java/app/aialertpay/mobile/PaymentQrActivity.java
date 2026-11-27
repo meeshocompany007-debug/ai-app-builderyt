@@ -31,7 +31,7 @@ public final class PaymentQrActivity extends Activity {
             address = state.getString("address", address);
             value = state.getString("value", "");
         }
-        if (state != null && state.getBoolean("editing")) showEditor();
+        if (state == null ? getIntent().getBooleanExtra(SettingsActivity.EDIT, false) : state.getBoolean("editing")) showEditor();
         else showTab();
     }
 
@@ -49,6 +49,10 @@ public final class PaymentQrActivity extends Activity {
         editing = false;
         setContentView(R.layout.payment_qr);
         findViewById(R.id.qr_back).setOnClickListener(v -> finish());
+        findViewById(R.id.open_settings).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(this, SettingsActivity.class));
+            finish();
+        });
         findViewById(R.id.open_team).setOnClickListener(v -> {
             startActivity(new android.content.Intent(this, TeamActivity.class));
             finish();
@@ -78,12 +82,12 @@ public final class PaymentQrActivity extends Activity {
         amount = findViewById(R.id.qr_amount);
         vpa.setText(address);
         amount.setText(value);
-        findViewById(R.id.qr_back).setOnClickListener(v -> showTab());
+        findViewById(R.id.qr_back).setOnClickListener(v -> leaveEditor());
         findViewById(R.id.generate_qr).setOnClickListener(v -> generate());
     }
 
     @Override public void onBackPressed() {
-        if (editing) showTab();
+        if (editing) leaveEditor();
         else super.onBackPressed();
     }
 
@@ -92,6 +96,11 @@ public final class PaymentQrActivity extends Activity {
         out.putString("address", address);
         out.putString("value", value);
         out.putBoolean("editing", editing);
+    }
+
+    private void leaveEditor() {
+        if (getIntent().getBooleanExtra(SettingsActivity.EDIT, false)) finish();
+        else showTab();
     }
 
     private void generate() {
@@ -109,7 +118,7 @@ public final class PaymentQrActivity extends Activity {
         this.value = value;
         String owner = Receipts.owner();
         if (owner != null) getSharedPreferences("qr", MODE_PRIVATE).edit().putString(owner, address).apply();
-        showTab();
+        leaveEditor();
     }
 
     private Bitmap encode(String payload) throws WriterException {

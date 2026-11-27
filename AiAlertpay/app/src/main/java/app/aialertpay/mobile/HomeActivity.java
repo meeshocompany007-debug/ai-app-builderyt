@@ -30,6 +30,9 @@ public final class HomeActivity extends Activity {
         super.onCreate(state);
         setContentView(R.layout.home);
         receipts = new Receipts(this);
+        findViewById(R.id.open_settings).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(this, SettingsActivity.class));
+        });
         findViewById(R.id.open_team).setOnClickListener(v -> {
             startActivity(new android.content.Intent(this, TeamActivity.class));
         });
@@ -64,6 +67,7 @@ public final class HomeActivity extends Activity {
 
     @Override protected void onStart() {
         super.onStart();
+        ((Switch)findViewById(R.id.voice_on)).setChecked(getSharedPreferences("alerts", MODE_PRIVATE).getBoolean("voice_on", true));
         getContentResolver().registerContentObserver(Receipts.CHANGES, false, observer);
         refresh();
     }
