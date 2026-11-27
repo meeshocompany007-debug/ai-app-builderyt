@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:fitsSystemWindows="true" android:background="#70001C"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center_vertical">
+        <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle" android:layout_width="56dp"
+            android:layout_height="match_parent" android:contentDescription="Back" android:text="←" android:textColor="#FFFFFF"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:gravity="center" android:text="Alert permissions" android:textSize="22sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:background="#FFF9ED">
+        <LinearLayout android:orientation="vertical" android:gravity="center_horizontal" android:padding="16dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <ImageView android:src="@mipmap/ic_launcher" android:importantForAccessibility="no" android:layout_width="96dp" android:layout_height="96dp"/>
+            <TextView android:text="AiAlertpay" android:textColor="#70001C" android:textStyle="bold" android:textSize="34sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+            <TextView android:text="UPI Mobile Soundbox" android:textSize="18sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/phone_outline" android:padding="16dp" android:layout_marginTop="16dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Notification access" android:textStyle="bold" android:textColor="#70001C" android:textSize="22sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Required for voice alerts" android:textColor="#70001C" android:textStyle="bold"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Android allows notification access across apps. Enable this for payment alerts from your selected UPI apps." android:layout_marginVertical="10dp" android:textSize="16sp"/>
+            <Button android:id="@+id/access" android:background="@drawable/start_shape" android:paddingHorizontal="16dp" android:textColor="#FFFFFF" android:textAllCaps="false" android:layout_width="wrap_content" android:layout_height="48dp" android:text="Open settings"/>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:background="@drawable/phone_outline" android:padding="16dp" android:layout_marginTop="16dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Show notifications" android:textStyle="bold" android:textColor="#70001C" android:textSize="22sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Optional" android:textColor="#70001C" android:textStyle="bold"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Allow AiAlertpay to show payment alerts. Lock-screen visibility follows your phone settings." android:layout_marginVertical="10dp" android:textSize="16sp"/>
+            <Button android:id="@+id/post" android:background="@drawable/start_shape" android:paddingHorizontal="16dp" android:textColor="#FFFFFF" android:textAllCaps="false" android:layout_width="wrap_content" android:layout_height="48dp" android:text="Allow"/>
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
