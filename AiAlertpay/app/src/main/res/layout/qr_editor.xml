@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fitsSystemWindows="true" android:orientation="vertical" android:background="#FFF9F1">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#70001C" android:gravity="center_vertical">
+        <Button android:id="@+id/qr_back" android:layout_width="56dp" android:layout_height="56dp" android:text="←" android:textColor="#FFFFFF" android:background="?android:attr/selectableItemBackground" android:contentDescription="Back"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Payment QR" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="22sp"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+            <ImageView android:layout_width="76dp" android:layout_height="76dp" android:layout_gravity="center_horizontal" android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="AiAlertpay" android:textSize="24sp" android:textStyle="bold" android:textColor="#70001C"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:text="Receive payments" android:textSize="28sp" android:textStyle="bold" android:textColor="#70001C"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enter your UPI ID to create a payment QR." android:textColor="#423637" android:textSize="16sp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:labelFor="@+id/vpa" android:text="UPI ID" android:textColor="#70001C"/>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@id/vpa" android:singleLine="true" android:inputType="textEmailAddress" android:hint="name@bank" android:maxLength="255"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:labelFor="@+id/qr_amount" android:text="Amount (optional)" android:textColor="#70001C"/>
+            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@id/qr_amount" android:singleLine="true" android:inputType="numberDecimal" android:maxLength="12" android:hint="₹"/>
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/generate_qr" android:layout_marginTop="22dp" android:text="Generate QR" android:textAllCaps="false" android:backgroundTint="#70001C" android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

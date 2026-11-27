@@ -3,17 +3,21 @@
         <Button android:id="@+id/qr_back" android:layout_width="56dp" android:layout_height="56dp" android:text="←" android:textColor="#FFFFFF" android:background="?android:attr/selectableItemBackground" android:contentDescription="Back"/>
         <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Payment QR" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="22sp"/>
     </LinearLayout>
-    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
-            <ImageView android:layout_width="76dp" android:layout_height="76dp" android:layout_gravity="center_horizontal" android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="AiAlertpay" android:textSize="24sp" android:textStyle="bold" android:textColor="#70001C"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp" android:text="Receive payments" android:textSize="28sp" android:textStyle="bold" android:textColor="#70001C"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Enter your UPI ID to create a payment QR." android:textColor="#423637" android:textSize="16sp"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:labelFor="@+id/vpa" android:text="UPI ID" android:textColor="#70001C"/>
-            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@id/vpa" android:singleLine="true" android:inputType="textEmailAddress" android:hint="name@bank" android:maxLength="255"/>
-            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:labelFor="@+id/qr_amount" android:text="Amount (optional)" android:textColor="#70001C"/>
-            <EditText android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@id/qr_amount" android:singleLine="true" android:inputType="numberDecimal" android:maxLength="12" android:hint="₹"/>
-            <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/generate_qr" android:layout_marginTop="22dp" android:text="Generate QR" android:textAllCaps="false" android:backgroundTint="#70001C" android:textColor="#FFFFFF"/>
+    <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center_horizontal" android:padding="16dp">
+            <ImageView android:layout_width="64dp" android:layout_height="64dp" android:src="@mipmap/ic_launcher" android:importantForAccessibility="no"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:background="#FFFFFF" android:padding="16dp" android:gravity="center" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="Your Payment QR Code" android:textStyle="bold" android:textColor="#251823" android:textSize="23sp"/>
+                <ImageView android:id="@+id/qr_image" android:layout_width="match_parent" android:layout_height="208dp" android:scaleType="fitCenter" android:src="@drawable/qr_empty" android:importantForAccessibility="no"/>
+                <TextView android:id="@+id/qr_caption" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="No UPI Address" android:textColor="#251823" android:textSize="20sp" android:textStyle="bold"/>
+                <TextView android:id="@+id/qr_hint" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="Add your UPI address to create a payment QR."/>
+                <Button android:id="@+id/edit_qr" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="+ Add UPI Address" android:textColor="#FFFFFF" android:backgroundTint="#70001C" android:textAllCaps="false"/>
+                <Button android:id="@+id/share_qr" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Share QR" android:textAllCaps="false" android:visibility="gone"/>
+            </LinearLayout>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="18dp" android:text="How to use" android:textStyle="bold" android:textSize="18sp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Show your QR at the counter.\nAdd an amount for a specific payment."/>
         </LinearLayout>
     </ScrollView>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal"><Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:text="Collection" android:textAllCaps="false" android:textSize="16sp" android:id="@+id/open_collection" android:textColor="#70001C" android:background="#FFFFFF"/>
+<TextView android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:text="QR" android:textAllCaps="false" android:textSize="16sp" android:textColor="#FFFFFF" android:background="#70001C"/></LinearLayout>
 </LinearLayout>

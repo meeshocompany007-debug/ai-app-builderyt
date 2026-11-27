@@ -1,7 +1,6 @@
 package app.aialertpay.mobile;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,13 +25,69 @@ public final class PaymentQrActivity extends Activity {
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
+        String owner = Receipts.owner();
+        address = owner == null ? "" : getSharedPreferences("qr", MODE_PRIVATE).getString(owner, "");
+        if (state != null) {
+            address = state.getString("address", address);
+            value = state.getString("value", "");
+        }
+        if (state != null && state.getBoolean("editing")) showEditor();
+        else showTab();
+    }
+
+    private String address = "", value = "";
+    private boolean editing;
+
+    private Bitmap makeQr(String id, String rupees) throws WriterException {
+        Uri.Builder payment = new Uri.Builder().scheme("upi").authority("pay")
+                .appendQueryParameter("pa", id).appendQueryParameter("pn", id).appendQueryParameter("cu", "INR");
+        if (!rupees.isEmpty()) payment.appendQueryParameter("am", rupees);
+        return encode(payment.build().toString());
+    }
+
+    private void showTab() {
+        editing = false;
         setContentView(R.layout.payment_qr);
+        findViewById(R.id.qr_back).setOnClickListener(v -> finish());
+        findViewById(R.id.open_collection).setOnClickListener(v -> finish());
+        android.widget.Button edit = findViewById(R.id.edit_qr);
+        edit.setOnClickListener(v -> showEditor());
+        if (address.isEmpty()) return;
+        edit.setText("Edit address or amount");
+        ((android.widget.TextView)findViewById(R.id.qr_caption)).setText(address);
+        android.widget.TextView hint = findViewById(R.id.qr_hint);
+        try {
+            Bitmap qr = makeQr(address, value);
+            ((ImageView)findViewById(R.id.qr_image)).setImageBitmap(qr);
+            hint.setText(value.isEmpty() ? "Scan to pay" : "Scan to pay ₹" + value);
+            findViewById(R.id.share_qr).setVisibility(android.view.View.VISIBLE);
+            findViewById(R.id.share_qr).setOnClickListener(v -> share(qr));
+        } catch (WriterException error) {
+            hint.setText("Could not create QR. Check your UPI address.");
+        }
+    }
+
+    private void showEditor() {
+        editing = true;
+        setContentView(R.layout.qr_editor);
         vpa = findViewById(R.id.vpa);
         amount = findViewById(R.id.qr_amount);
-        String owner = Receipts.owner();
-        if (owner != null) vpa.setText(getSharedPreferences("qr", MODE_PRIVATE).getString(owner, ""));
-        findViewById(R.id.qr_back).setOnClickListener(v -> finish());
+        vpa.setText(address);
+        amount.setText(value);
+        findViewById(R.id.qr_back).setOnClickListener(v -> showTab());
         findViewById(R.id.generate_qr).setOnClickListener(v -> generate());
+    }
+
+    @Override public void onBackPressed() {
+        if (editing) showTab();
+        else super.onBackPressed();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle out) {
+        super.onSaveInstanceState(out);
+        out.putString("address", address);
+        out.putString("value", value);
+        out.putBoolean("editing", editing);
     }
 
     private void generate() {
@@ -42,30 +97,15 @@ public final class PaymentQrActivity extends Activity {
             vpa.setError("Enter your full UPI ID, for example name@bank");
             return;
         }
-        Uri.Builder payment = new Uri.Builder().scheme("upi").authority("pay")
-                .appendQueryParameter("pa", address).appendQueryParameter("pn", address)
-                .appendQueryParameter("cu", "INR");
-        if (!value.isEmpty()) {
-            if (!value.matches("[0-9]+(?:\\.[0-9]{1,2})?") || new BigDecimal(value).signum() <= 0) {
-                amount.setError("Enter a positive amount with up to two decimal places");
-                return;
-            }
-            payment.appendQueryParameter("am", new BigDecimal(value).toPlainString());
+        if (!value.isEmpty() && (!value.matches("[0-9]+(?:\\.[0-9]{1,2})?") || new BigDecimal(value).signum() <= 0)) {
+            amount.setError("Enter a positive amount with up to two decimal places");
+            return;
         }
-        try {
-            Bitmap bitmap = encode(payment.build().toString());
-            String owner = Receipts.owner();
-            if (owner != null) getSharedPreferences("qr", MODE_PRIVATE).edit().putString(owner, address).apply();
-            ImageView image = new ImageView(this);
-            image.setImageBitmap(bitmap);
-            image.setAdjustViewBounds(true);
-            image.setContentDescription("Payment QR for " + address);
-            new AlertDialog.Builder(this).setTitle("Scan to pay")
-                    .setMessage(address + (value.isEmpty() ? "" : "  ·  ₹" + value)).setView(image)
-                    .setNegativeButton("Done", null).setPositiveButton("Share QR", (d, w) -> share(bitmap)).show();
-        } catch (WriterException error) {
-            Toast.makeText(this, "Could not create QR. Check the UPI ID.", Toast.LENGTH_LONG).show();
-        }
+        this.address = address;
+        this.value = value;
+        String owner = Receipts.owner();
+        if (owner != null) getSharedPreferences("qr", MODE_PRIVATE).edit().putString(owner, address).apply();
+        showTab();
     }
 
     private Bitmap encode(String payload) throws WriterException {
