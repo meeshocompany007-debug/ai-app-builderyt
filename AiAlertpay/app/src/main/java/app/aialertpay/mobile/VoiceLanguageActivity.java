@@ -12,7 +12,7 @@ public final class VoiceLanguageActivity extends Activity {
         super.onCreate(state);
         setContentView(R.layout.voice_language);
         findViewById(R.id.back).setOnClickListener(v -> finish());
-        findViewById(R.id.done).setOnClickListener(v -> finish());
+        findViewById(R.id.done).setOnClickListener(v -> startActivity(new android.content.Intent(this, ClosingMessageActivity.class)));
         findViewById(R.id.sample).setOnClickListener(v -> VoiceSample.play(this));
         findViewById(R.id.more_languages).setOnClickListener(v -> {
             String[] tags = VoiceSample.names.keySet().toArray(new String[0]);

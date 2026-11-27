@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:fitsSystemWindows="true"
+    android:background="#70001C" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="52dp">
+        <Button android:id="@+id/back" style="?android:attr/borderlessButtonStyle" android:contentDescription="Back" android:text="←" android:textColor="#FFFFFF" android:layout_width="56dp" android:layout_height="match_parent"/>
+        <TextView android:text="Closing message" android:textColor="#FFFFFF" android:textSize="22sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <ScrollView android:background="#FFF9ED" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+    <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:padding="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:src="@mipmap/ic_launcher" android:importantForAccessibility="no" android:layout_width="96dp" android:layout_height="96dp"/>
+        <TextView android:text="AiAlertpay" android:textSize="30sp" android:textStyle="bold" android:textColor="#70001C" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <TextView android:text="After the payment amount" android:textColor="#70001C" android:textStyle="bold" android:textSize="22sp" android:layout_marginTop="24dp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <RadioGroup android:id="@+id/closing_options" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <RadioButton android:id="@+id/amount_only" android:text="Amount only" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/thanks" android:text="Dhanyavaad" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/jai_bhim" android:text="Jai Bhim" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/radhe" android:text="Radhe Radhe" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <RadioButton android:id="@+id/custom" android:text="Custom message" android:minHeight="48dp" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        </RadioGroup>
+        <EditText android:id="@+id/custom_text" android:hint="Enter your message" android:inputType="textCapSentences" android:maxLength="160" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+        <Button android:id="@+id/sample" android:text="Listen to ₹20 sample" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAllCaps="false"/>
+    </LinearLayout>
+    </ScrollView>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#FFF9ED" android:padding="12dp">
+        <Button android:id="@+id/done" android:text="Save &amp; Done" android:textAllCaps="false" android:textColor="#FFFFFF" android:background="@drawable/start_shape" android:layout_width="match_parent" android:layout_height="52dp"/>
+    </FrameLayout>
+</LinearLayout>

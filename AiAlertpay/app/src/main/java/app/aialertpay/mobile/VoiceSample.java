@@ -63,6 +63,11 @@ final class VoiceSample {
 
     // Input uses integer paise to keep every digit exact.
     static void announce(Context context, long amountPaise) {
+        android.content.SharedPreferences prefs = context.getSharedPreferences("alerts", 0);
+        announce(context, amountPaise, prefs.getString("closing_mode", "none"), prefs.getString("closing_text", ""));
+    }
+
+    static void announce(Context context, long amountPaise, String mode, String custom) {
         if (amountPaise < 0) throw new IllegalArgumentException("Negative payment");
         String tag = resolved(choice(context));
         List<String> clips = new ArrayList<>();
@@ -77,20 +82,23 @@ final class VoiceSample {
             clips.add("received");
         }
         Context app = context.getApplicationContext();
-        new Thread(() -> playClips(app, tag, clips), "payment-audio").start();
+        new Thread(() -> playClips(app, tag, clips, mode, custom), "payment-audio").start();
     }
 
     private static void addDigits(List<String> clips, long number) {
         for (char digit : Long.toString(number).toCharArray()) clips.add(String.valueOf(digit));
     }
 
-    private static synchronized void playClips(Context app, String tag, List<String> clips) {
+    private static synchronized void playClips(Context app, String tag, List<String> clips, String mode, String custom) {
         AudioTrack track = null;
         try {
             ByteArrayOutputStream pcm = new ByteArrayOutputStream();
             byte[] buffer = new byte[8192];
-            for (String clip : clips) {
-                try (InputStream input = app.getAssets().open("voices/" + tag + "/" + clip + ".pcm")) {
+            List<String> paths = new ArrayList<>();
+            for (String clip : clips) paths.add(tag + "/" + clip);
+            if (Arrays.asList("thanks", "jai_bhim", "radhe").contains(mode)) paths.add("endings/" + mode);
+            for (String path : paths) {
+                try (InputStream input = app.getAssets().open("voices/" + path + ".pcm")) {
                     int count;
                     while ((count = input.read(buffer)) != -1) pcm.write(buffer, 0, count);
                 }
@@ -108,6 +116,8 @@ final class VoiceSample {
             long deadline = android.os.SystemClock.elapsedRealtime() + audio.length * 1000L / 44100 + 2000;
             while (track.getPlaybackHeadPosition() < audio.length / 2 && android.os.SystemClock.elapsedRealtime() < deadline)
                 android.os.SystemClock.sleep(30);
+            if ("custom".equals(mode) && !custom.isEmpty())
+                ClosingSpeech.speak(app, tag, custom);
         } catch (IOException | RuntimeException error) {
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(app, "Could not play voice.", Toast.LENGTH_LONG).show());
         } finally {

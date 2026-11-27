@@ -13,11 +13,15 @@ root = pathlib.Path(sys.argv[1]) / "voices"
 root.mkdir(parents=True, exist_ok=True)
 with tempfile.TemporaryDirectory() as temporary:
     wav = pathlib.Path(temporary) / "speech.wav"
-    for row in catalog:
+    endings = {"thanks": "धन्यवाद", "jai_bhim": "जय भीम", "radhe": "राधे राधे"}
+    for row in [*catalog, {"tag": "endings", "engine": "hi"}]:
         folder = root / row["tag"]
         folder.mkdir(exist_ok=True)
-        clips = dict(enumerate(row.get("digits", map(str, range(10)))))
-        clips.update({key: row[key] for key in ("sample", "rupee", "paise", "received")})
+        if row["tag"] == "endings":
+            clips = endings
+        else:
+            clips = dict(enumerate(row.get("digits", map(str, range(10)))))
+            clips.update({key: row[key] for key in ("sample", "rupee", "paise", "received")})
         for key, words in clips.items():
             subprocess.run(["espeak-ng", "-v", row["engine"], "-s", "148",
                             "-w", str(wav), words], check=True)
