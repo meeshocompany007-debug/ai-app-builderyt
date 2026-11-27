@@ -20,7 +20,6 @@ import java.util.Locale;
 public final class AlertPermissionsActivity extends Activity {
     private TextToSpeech speech;
     private SeekBar volume;
-    private boolean hindi;
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
@@ -55,15 +54,10 @@ public final class AlertPermissionsActivity extends Activity {
         speech = new TextToSpeech(this, status -> runOnUiThread(() -> {
             if (isDestroyed() || speech == null) return;
             if (status != TextToSpeech.SUCCESS) { toast("Voice engine unavailable."); return; }
-            hindi = speech.setLanguage(Locale.forLanguageTag("hi-IN")) >= 0;
-            if (!hindi && speech.setLanguage(Locale.ENGLISH) < 0) { toast("Install a voice in Android settings."); return; }
             test.setEnabled(true);
         }));
         test.setOnClickListener(v -> {
-            Bundle options = new Bundle();
-            options.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, volume.getProgress() / 100f);
-            String sample = hindi ? "यह एक टेस्ट है। बीस रुपये प्राप्त हुए।" : "Test alert. Twenty rupees received.";
-            if (speech.speak(sample, TextToSpeech.QUEUE_FLUSH, options, "sample") == TextToSpeech.ERROR) toast("Unable to play voice.");
+            VoiceSample.play(this, speech);
         });
     }
 
