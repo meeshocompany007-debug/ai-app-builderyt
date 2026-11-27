@@ -43,6 +43,7 @@ public final class TeamActivity extends Activity {
         names.sort(String.CASE_INSENSITIVE_ORDER);
         adapter.clear();
         adapter.addAll(names);
+        ((android.widget.TextView)findViewById(R.id.member_count)).setText(String.valueOf(names.size()));
     }
 
     private void addMember() {
