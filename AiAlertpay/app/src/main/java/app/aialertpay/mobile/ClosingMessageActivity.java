@@ -42,6 +42,7 @@ public final class ClosingMessageActivity extends Activity {
         if (save) {
             getSharedPreferences("alerts", MODE_PRIVATE).edit()
                     .putString("closing_mode", mode).putString("closing_text", text).apply();
+            startActivity(new android.content.Intent(this, HomeActivity.class));
             finish();
         } else VoiceSample.announce(this, 2000L, mode, text);
     }

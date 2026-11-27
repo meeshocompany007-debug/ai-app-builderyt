@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fitsSystemWindows="true" android:orientation="vertical" android:background="#FFF9ED">
+    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:text="AiAlertpay" android:background="#70001C" android:textColor="#FFFFFF" android:textSize="24sp" android:textStyle="bold"/>
+    <Button android:id="@+id/day" android:layout_width="match_parent" android:layout_height="wrap_content" android:textAllCaps="false"/>
+    <TextView android:id="@+id/collection" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:padding="16dp" android:textSize="22sp" android:textStyle="bold" android:textColor="#70001C"/>
+    <Switch android:id="@+id/voice_on" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:paddingHorizontal="16dp" android:text="Payment voice alerts"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="12dp" android:text="Received payments" android:textStyle="bold" android:textSize="20sp"/>
+    <ListView android:id="@+id/payments" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+    <TextView android:id="@+id/total" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="14dp" android:background="#70001C" android:textColor="#FFFFFF" android:textSize="20sp" android:textStyle="bold"/>
+</LinearLayout>
