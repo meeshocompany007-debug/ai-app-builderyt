@@ -72,7 +72,7 @@ public final class VerifyActivity extends Activity {
         long remaining = retryAt - SystemClock.elapsedRealtime();
         boolean ready = auth != null && !verified() && !signing;
         verify.setEnabled(ready && verificationId != null && !sending);
-        otp.setEnabled(ready);
+        otp.setEnabled(ready && verificationId != null && !sending);
         resend.setEnabled(ready && !sending && remaining <= 0);
         resend.setText("Resend code");
         if (remaining > 0 && ready) {
@@ -83,7 +83,12 @@ public final class VerifyActivity extends Activity {
         }
     }
 
+    private boolean isTestNumber() {
+        return BuildConfig.DEBUG && number.equals(BuildConfig.FIREBASE_TEST_PHONE);
+    }
+
     private void request(boolean force) {
+        auth.getFirebaseAuthSettings().setAppVerificationDisabledForTesting(isTestNumber());
         sending = true;
         status.setText("Requesting verification code…");
         controls();
@@ -101,7 +106,8 @@ public final class VerifyActivity extends Activity {
             token = newToken;
             sending = false;
             retryAt = SystemClock.elapsedRealtime() + 30000;
-            status.setText("Code sent to +91 ••••••" + number.substring(number.length() - 4));
+            if (isTestNumber()) status.setText("Test login ready. Enter the 6-digit code saved in Firebase. No SMS is sent.");
+            else status.setText("Code sent to +91 ••••••" + number.substring(number.length() - 4));
             controls();
         }
         @Override public void onVerificationCompleted(PhoneAuthCredential credential) {
@@ -110,10 +116,18 @@ public final class VerifyActivity extends Activity {
         }
         @Override public void onVerificationFailed(FirebaseException error) {
             sending = false;
-            status.setText("Could not send a code. Check your connection or try again later.");
+            verificationId = null;
+            status.setText("Code request failed. " + errorReason(error));
             controls();
         }
     };
+
+    private String errorReason(Exception error) {
+        if (error instanceof FirebaseAuthException) return ((FirebaseAuthException) error).getErrorCode();
+        if (error instanceof com.google.firebase.FirebaseNetworkException) return "Check your internet connection.";
+        if (error instanceof com.google.firebase.FirebaseTooManyRequestsException) return "Too many attempts. Try again later.";
+        return error == null ? "Please try again." : error.getClass().getSimpleName();
+    }
 
     private void signIn(PhoneAuthCredential credential) {
         if (signing || verified()) return;
@@ -125,7 +139,7 @@ public final class VerifyActivity extends Activity {
             signing = false;
             if (task.isSuccessful() && verified()) showSuccess();
             else {
-                status.setText("Verification failed. Check the code or request a new one.");
+                status.setText("Verification failed. " + errorReason(task.getException()));
                 controls();
             }
         });

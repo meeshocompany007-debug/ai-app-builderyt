@@ -6,12 +6,19 @@ plugins {
 android {
     namespace = "app.aialertpay.mobile"
     compileSdk = 35
+    buildFeatures { buildConfig = true }
+    buildTypes {
+        getByName("debug") {
+            buildConfigField("String", "FIREBASE_TEST_PHONE", "\"+916100000147\"")
+        }
+    }
     defaultConfig {
+        buildConfigField("String", "FIREBASE_TEST_PHONE", "\"\"")
         applicationId = "app.aialertpay.mobile"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 2
+        versionName = "0.2"
     }
 }
 
