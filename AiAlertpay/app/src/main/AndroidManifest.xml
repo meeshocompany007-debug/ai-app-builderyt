@@ -33,7 +33,6 @@
         <activity android:name=".VoiceLanguageActivity" android:exported="false"/>
         <activity android:name=".PaymentAppsActivity" android:exported="false"/>
         <activity android:name=".AlertPermissionsActivity" android:exported="false"/>
-        <activity android:name=".PlanDetailsActivity" android:exported="false"/>
         <activity android:name=".SubscriptionActivity" android:exported="false"/>
         <activity android:name=".VerifyActivity" android:exported="false" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".LoginActivity" android:exported="false"

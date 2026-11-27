@@ -20,8 +20,6 @@ public final class SettingsActivity extends Activity {
         editor(R.id.settings_closing, ClosingMessageActivity.class);
         editor(R.id.settings_apps, PaymentAppsActivity.class);
         editor(R.id.settings_permissions, AlertPermissionsActivity.class);
-        findViewById(R.id.settings_subscription).setOnClickListener(v ->
-                startActivity(new Intent(this, PlanDetailsActivity.class)));
         editor(R.id.settings_address, PaymentQrActivity.class);
         findViewById(R.id.settings_test).setOnClickListener(v -> VoiceSample.announce(this, 2000L));
         findViewById(R.id.open_collection).setOnClickListener(v -> finish());
