@@ -25,6 +25,8 @@ public final class AlertPermissionsActivity extends Activity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.alert_permissions);
+        findViewById(R.id.payment_apps).setOnClickListener(v ->
+                startActivity(new Intent(this, PaymentAppsActivity.class)));
         findViewById(R.id.back).setOnClickListener(v -> finish());
         findViewById(R.id.access).setOnClickListener(v -> open(new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)));
         findViewById(R.id.post).setOnClickListener(v -> {

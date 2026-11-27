@@ -60,6 +60,9 @@
             </LinearLayout>
             
         </LinearLayout>
+        <Button android:id="@+id/payment_apps" android:text="Choose payment apps" android:textAllCaps="false"
+            android:background="@drawable/start_shape" android:textColor="#FFFFFF"
+            android:layout_width="match_parent" android:layout_height="48dp"/>
     </LinearLayout>
     </ScrollView>
 </LinearLayout>
