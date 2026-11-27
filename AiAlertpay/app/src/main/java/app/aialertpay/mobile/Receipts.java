@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 final class Receipts extends SQLiteOpenHelper {
     static final Uri CHANGES = Uri.parse("content://app.aialertpay.mobile/receipts");
-    Receipts(Context context) { super(context, "receipts.db", null, 1); }
+    Receipts(Context context) { super(context, "receipts.db", null, 2); }
 
     static String owner() {
         try { return FirebaseAuth.getInstance().getUid(); }
@@ -16,10 +16,13 @@ final class Receipts extends SQLiteOpenHelper {
     }
 
     @Override public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE receipt (owner TEXT NOT NULL, event TEXT NOT NULL, time INTEGER NOT NULL, payer TEXT NOT NULL, paise INTEGER NOT NULL, PRIMARY KEY(owner,event))");
+        db.execSQL("CREATE TABLE receipt (owner TEXT NOT NULL, event TEXT NOT NULL, time INTEGER NOT NULL, payer TEXT NOT NULL, paise INTEGER NOT NULL, source TEXT, recipient TEXT, PRIMARY KEY(owner,event))");
         db.execSQL("CREATE INDEX receipt_day ON receipt(owner,time)");
     }
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        throw new IllegalStateException("Unsupported receipt schema");
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE receipt ADD COLUMN source TEXT");
+            db.execSQL("ALTER TABLE receipt ADD COLUMN recipient TEXT");
+        }
     }
 }

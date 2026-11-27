@@ -15,6 +15,7 @@ public final class PaymentNotificationListener extends NotificationListenerServi
             + "|" + MONEY + "\\s+(?:received|credited))(?=\\s|[.!]|$)", Pattern.CASE_INSENSITIVE);
     private static final Pattern EXCLUDE = Pattern.compile("\\b(request(?:ed)?|pending|failed|reversed|refund(?:ed)?|cashback|reward|collect|offer|debited|sent|demo|sample|reminder|up to)\\b", Pattern.CASE_INSENSITIVE);
     private static final Pattern FROM = Pattern.compile("\\bfrom\\s+([\\p{L}\\p{M}][\\p{L}\\p{M} .'-]{0,64}?)(?=\\s+(?:via|on|at|to|UPI|ref)\\b|[.!\\n]|$)", Pattern.CASE_INSENSITIVE);
+    private static final Pattern TO = Pattern.compile("\\bto\\s+([\\p{L}\\p{M}][\\p{L}\\p{M} .'-]{0,64}?)(?=\\s+(?:via|on|at|from|UPI|ref)\\b|[.!\\n]|$)", Pattern.CASE_INSENSITIVE);
     private Receipts receipts;
 
     @Override public void onCreate() { super.onCreate(); receipts = new Receipts(this); }
@@ -47,6 +48,9 @@ public final class PaymentNotificationListener extends NotificationListenerServi
         data.put("time", sbn.getPostTime());
         data.put("payer", from.find() ? from.group(1).trim() : "Name unavailable");
         data.put("paise", paise);
+        data.put("source", pkg);
+        Matcher recipient = TO.matcher(body);
+        if (recipient.find()) data.put("recipient", recipient.group(1).trim());
         if (receipts.getWritableDatabase().insertWithOnConflict("receipt", null, data, SQLiteDatabase.CONFLICT_IGNORE) == -1) return;
         getContentResolver().notifyChange(Receipts.CHANGES, null);
         if (getSharedPreferences("alerts", MODE_PRIVATE).getBoolean("voice_on", true))
