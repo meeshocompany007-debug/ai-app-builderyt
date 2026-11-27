@@ -20,7 +20,7 @@ jobs:
         with:
           gradle-version: '8.9'
       - run: sudo apt-get update -qq && sudo apt-get install -y espeak-ng
-      - run: gradle -p AiAlertpay assembleDebug
+      - run: gradle -p AiAlertpay assembleDebug :app:signingReport
       - name: Verify all 26 offline packs in APK
         run: |
           python3 - <<'PY'
