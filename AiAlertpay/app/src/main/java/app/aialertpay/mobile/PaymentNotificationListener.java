@@ -1,6 +1,10 @@
 package app.aialertpay.mobile;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.service.notification.NotificationListenerService;
@@ -55,6 +59,34 @@ public final class PaymentNotificationListener extends NotificationListenerServi
         getContentResolver().notifyChange(Receipts.CHANGES, null);
         if (getSharedPreferences("alerts", MODE_PRIVATE).getBoolean("voice_on", true))
             VoiceSample.announce(this, paise);
+        postCollectionAlert();
+    }
+
+    private void postCollectionAlert() {
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager == null || !manager.areNotificationsEnabled()) return;
+        String channelId = "incoming_receipts";
+        NotificationChannel channel = new NotificationChannel(channelId, "Incoming payments",
+                NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setSound(null, null);
+        channel.enableVibration(false);
+        manager.createNotificationChannel(channel);
+        Intent collection = new Intent(this, HomeActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent open = PendingIntent.getActivity(this, 0, collection, PendingIntent.FLAG_IMMUTABLE);
+        Notification alert = new Notification.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_receipt_alert)
+                .setContentTitle("Payment received")
+                .setContentText("Unlock to view payment details")
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .setContentIntent(open)
+                .setAutoCancel(true)
+                .build();
+        try {
+            manager.notify(701, alert);
+        } catch (SecurityException revoked) {
+            // The user can revoke notification permission while an alert is being prepared.
+        }
     }
 
     @Override public void onDestroy() { receipts.close(); super.onDestroy(); }
