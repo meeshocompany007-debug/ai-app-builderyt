@@ -49,6 +49,10 @@ public final class PaymentQrActivity extends Activity {
         editing = false;
         setContentView(R.layout.payment_qr);
         findViewById(R.id.qr_back).setOnClickListener(v -> finish());
+        findViewById(R.id.open_team).setOnClickListener(v -> {
+            startActivity(new android.content.Intent(this, TeamActivity.class));
+            finish();
+        });
         findViewById(R.id.open_collection).setOnClickListener(v -> finish());
         android.widget.Button edit = findViewById(R.id.edit_qr);
         edit.setOnClickListener(v -> showEditor());

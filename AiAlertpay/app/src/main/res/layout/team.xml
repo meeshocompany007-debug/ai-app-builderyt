@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:fitsSystemWindows="true" android:orientation="vertical" android:background="#FFF9F1">
+    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:text="Team" android:textSize="24sp" android:textStyle="bold" android:textColor="#FFFFFF" android:background="#70001C"/>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+        <ListView android:id="@+id/members" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingBottom="84dp" android:clipToPadding="false"/>
+        <LinearLayout android:id="@+id/team_empty" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="center" android:gravity="center" android:orientation="vertical">
+            <ImageView android:layout_width="66dp" android:layout_height="66dp" android:src="@drawable/team_people" android:importantForAccessibility="no"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="Your shop team" android:textColor="#70001C" android:textSize="24sp" android:textStyle="bold"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:text="No members added yet." android:textColor="#32262C"/>
+        </LinearLayout>
+        <ImageButton android:id="@+id/add_member" android:layout_width="64dp" android:layout_height="56dp" android:layout_gravity="bottom|end" android:layout_margin="16dp" android:src="@android:drawable/ic_menu_add" android:backgroundTint="#70001C" android:contentDescription="Add team member"/>
+    </FrameLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:textSize="16sp" android:id="@+id/open_collection" android:text="Collection" android:textColor="#70001C" android:background="#FFFFFF"/>
+        <Button android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:textSize="16sp" android:id="@+id/open_qr" android:text="QR" android:textColor="#70001C" android:background="#FFFFFF"/>
+        <TextView android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:gravity="center" android:textAllCaps="false" android:textSize="16sp" android:text="Team" android:textColor="#FFFFFF" android:background="#70001C"/>
+    </LinearLayout>
+</LinearLayout>
